@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     WeekFragment weekFragment;
     SettingFragment settingFragment;
     FragmentTransaction fragmentTransaction;
+    OnBackPressedListener onBackPressedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_frame, mandalArtFragment).commitAllowingStateLoss();
 
     }
+
     public void clickHandler(View view){
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (view.getId()){
@@ -55,4 +57,14 @@ public class MainActivity extends AppCompatActivity {
             default:
         }
     }
+
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener){
+        this.onBackPressedListener = onBackPressedListener;
+    }
+    @Override
+    public void onBackPressed(){
+        if(onBackPressedListener != null) onBackPressedListener.onBackPressed();
+        else super.onBackPressed();
+    }
+
 }

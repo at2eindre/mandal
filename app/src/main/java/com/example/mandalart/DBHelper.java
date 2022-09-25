@@ -61,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
             TABLE_TOPICS + "(" + TOPIC_ID + " TEXT, " + TOPIC + " TEXT);";
 
     static final String SSUB_CRATE = "CREATE TABLE if not exists " +
-            TABLE_SSUB + "(" + ID + " TEXT, " + TOPIC_ID + " TEXT, " +
+            TABLE_SSUB + "(" + TOPIC_ID + " TEXT, " +
             PLAN_ID_1 + " TEXT, " + PLAN_ID_2 + " TEXT, " + PLAN_ID_3 + " TEXT, " +
             PLAN_ID_4 + " TEXT, " + PLAN_ID_5 + " TEXT, " + PLAN_ID_6 + " TEXT, " +
             PLAN_ID_7 + " TEXT, " + PLAN_ID_8 + " TEXT);";
