@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "Mandalart"
 include ':app'
 include ':app'
+include ':colorpicker'
