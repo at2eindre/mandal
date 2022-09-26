@@ -1,57 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<LinearLayout
-    android:id="@+id/title_linearlayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintBottom_toTopOf="@id/insert_mandalart_table_term"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <EditText
-        android:id="@+id/insert_title"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/title_linearlayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
-        android:hint="만다라트 이름을 입력하세요."
+        app:layout_constraintBottom_toTopOf="@id/insert_mandalart_table_term"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/insert_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:hint="만다라트 이름을 입력하세요."
+            android:textSize="20sp"
+            />
+
+        <Button
+            android:id="@+id/color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="OPEN" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/insert_mandalart_table_term"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="기간"
         android:textSize="20sp"
-        />
+        app:layout_constraintBottom_toTopOf="@+id/insert_mandalart_table_framelayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_linearlayout" />
 
-    <Button
-        android:id="@+id/color_picker"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/insert_mandalart_table_framelayout"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/insert_mandalart_table_term"
+        app:layout_constraintBottom_toTopOf="@id/insert_mandalart_table_day">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/insert_mandalart_table_day"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="OPEN" />
-</LinearLayout>
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/insert_mandalart_table_framelayout"
+        >
 
-<TextView
-    android:id="@+id/insert_mandalart_table_term"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="기간"
-    android:textSize="20sp"
-    app:layout_constraintBottom_toTopOf="@+id/insert_mandalart_table_framelayout"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/title_linearlayout" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="기간"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+            <TextView
+            android:id="@+id/mon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="월"
+            android:clickable="true"
+                android:textSize="16sp"
+            />
 
-<FrameLayout
-    android:id="@+id/insert_mandalart_table_framelayout"
-    android:layout_width="match_parent"
-    android:layout_height="500dp"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/insert_mandalart_table_term">
+            <TextView
+            android:id="@+id/tue"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="화"
+            android:clickable="true"
+                android:textSize="16sp"
+            />
+            <TextView
+            android:id="@+id/wed"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="수"
+            android:clickable="true"
+                android:textSize="16sp"
+            />
+            <TextView
+            android:id="@+id/thu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="목"
+            android:clickable="true"
+                android:textSize="16sp"
+            />
 
-
-</FrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+            android:id="@+id/fri"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="금"
+            android:clickable="true"
+                android:textSize="16sp"
+            />
+            <TextView
+            android:id="@+id/sat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="토"
+            android:clickable="true"
+                android:textSize="16sp"
+            />
+            <TextView
+                android:id="@+id/sun"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="일"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/noterm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="기간X "
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="내용"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8.5"
+                android:gravity="center"
+                android:hint="내용을 입력하세요"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
