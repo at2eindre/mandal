@@ -1,9 +1,12 @@
 package com.example.mandalart;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction fragmentTransaction;
     OnBackPressedListener onBackPressedListener;
 
+    public String tableId = null;
+    public String topicId = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         sqLiteDatabase = dbHelper.getWritableDatabase();
         dbHelper.onCreate(sqLiteDatabase);
         fragmentManager = getSupportFragmentManager();
+
+        getTableId();
+
         mandalArtFragment = new MandalArtFragment();
         dayFragment = new DayFragment();
         weekFragment = new WeekFragment();
@@ -63,8 +72,21 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed(){
-        if(onBackPressedListener != null) onBackPressedListener.onBackPressed();
-        else super.onBackPressed();
+        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentById(R.id.main_frame);
+        if(fragment.equals(mandalArtFragment)){
+            if(onBackPressedListener != null) onBackPressedListener.onBackPressed();
+            else super.onBackPressed();
+        }
+        else{
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.main_frame, mandalArtFragment).commitAllowingStateLoss();
+        }
+    }
+
+    public void getTableId(){
+        SharedPreferences sharedPreferences = getSharedPreferences("table", Activity.MODE_PRIVATE);
+        tableId = sharedPreferences.getString("tableId", null);
+        if(tableId == null) tableId = "0";
     }
 
 }
