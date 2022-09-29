@@ -62,104 +62,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/insert_mandalart_table_framelayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:gravity="center"
-                android:text="기간"
-                android:clickable="true"
-                android:textSize="16sp"
-                />
-            <TextView
-            android:id="@+id/mon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="월"
-            android:clickable="true"
-                android:textSize="16sp"
-            />
 
-            <TextView
-            android:id="@+id/tue"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="화"
-            android:clickable="true"
-                android:textSize="16sp"
-            />
-            <TextView
-            android:id="@+id/wed"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="수"
-            android:clickable="true"
-                android:textSize="16sp"
-            />
-            <TextView
-            android:id="@+id/thu"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="목"
-            android:clickable="true"
-                android:textSize="16sp"
-            />
-
-            <TextView
-            android:id="@+id/fri"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="금"
-            android:clickable="true"
-                android:textSize="16sp"
-            />
-            <TextView
-            android:id="@+id/sat"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="토"
-            android:clickable="true"
-                android:textSize="16sp"
-            />
-            <TextView
-                android:id="@+id/sun"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="일"
-                android:clickable="true"
-                android:textSize="16sp"
-                />
-            <TextView
-                android:id="@+id/noterm"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:gravity="center"
-                android:text="기간X "
-                android:clickable="true"
-                android:textSize="16sp"
-                />
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -168,7 +76,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="내용"
                 android:clickable="true"
@@ -178,9 +86,96 @@
                 android:id="@+id/content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="8.5"
+                android:layout_weight="7"
                 android:gravity="center"
                 android:hint="내용을 입력하세요"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/term_visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="기간"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/mon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="월"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/tue"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="화"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/wed"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="수"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/thu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="목"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/fri"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="금"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/sat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="토"
+                android:clickable="true"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/sun"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="일"
                 android:clickable="true"
                 android:textSize="16sp"
                 />

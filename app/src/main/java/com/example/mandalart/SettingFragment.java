@@ -1,12 +1,16 @@
 package com.example.mandalart;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,17 +20,29 @@ import androidx.fragment.app.Fragment;
 public class SettingFragment extends Fragment  implements OnBackPressedListener{
 
     TextView sub1, sub2, sub3, sub4, sub5, sub6, sub7, sub8;
+    TextView mon, tue, wed, thu, fri, sat, sun;
     Button button_sub1, button_sub2, button_sub3, button_sub4, button_sub5, button_sub6, button_sub7, button_sub8;
     TextView ssub1, ssub2, ssub3, ssub4, ssub5, ssub6, ssub7, ssub8;
     TextView sub_topic, main_theme;
     FrameLayout frameLayout;
     LayoutInflater layoutInflater;
     View frameView, fragmentView;
+    LinearLayout linearLayout;
+    EditText editText;
 
     static final int MAIN_MODE = 0;
     static final int SUB_MODE = 1;
+    static final int SSUB1 = 1;
+    static final int SSUB2 = 2;
+    static final int SSUB3 = 3;
+    static final int SSUB4 = 4;
+    static final int SSUB5 = 5;
+    static final int SSUB6 = 6;
+    static final int SSUB7 = 7;
+    static final int SSUB8 = 8;
 
     int currentMode = MAIN_MODE;
+    int insertWhere=SSUB1;
 
     MainActivity mainActivity;
 
@@ -71,52 +87,57 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
 
         main_theme = (TextView)fragmentView.findViewById(R.id.add_main_theme);
 
+        linearLayout=(LinearLayout)fragmentView.findViewById(R.id.term_visible);
+        linearLayout.setVisibility(View.INVISIBLE);
+
+        editText=(EditText)fragmentView.findViewById(R.id.content);
+        editText.setText("");
+
         sub1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertData();
             }
         });
         sub2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertData();
+                insertMainData();
             }
         });
         sub3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertData();
+                insertMainData();
             }
         });
         sub4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertData();
+                insertMainData();
             }
         });
         sub5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertData();
+                insertMainData();
             }
         });
         sub6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertData();
+                insertMainData();
             }
         });
         sub7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertData();
+                insertMainData();
             }
         });
         sub8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertData();
+                insertMainData();
             }
         });
 
@@ -168,6 +189,20 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
                 changeView();
             }
         });
+
+        mon = (TextView) fragmentView.findViewById(R.id.mon);
+        tue = (TextView) fragmentView.findViewById(R.id.tue);
+        wed = (TextView) fragmentView.findViewById(R.id.wed);
+        thu = (TextView) fragmentView.findViewById(R.id.thu);
+        fri = (TextView) fragmentView.findViewById(R.id.fri);
+        sat = (TextView) fragmentView.findViewById(R.id.sat);
+        sun = (TextView) fragmentView.findViewById(R.id.sun);
+        mon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //색깔 확인
+            }
+        });
     }
 
     void subInit(){
@@ -188,11 +223,99 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
                 changeBackView();
             }
         });
+
+        linearLayout=(LinearLayout)fragmentView.findViewById(R.id.term_visible);
+        linearLayout.setVisibility(View.VISIBLE);
+
+        editText=(EditText)fragmentView.findViewById(R.id.content);
+        editText.setText("");
+
+        ssub1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertData(insertWhere);
+                insertWhere=SSUB1;
+            }
+        });
+        ssub2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertData(insertWhere);
+                insertWhere=SSUB2;
+            }
+        });
+        ssub3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertData(insertWhere);
+                insertWhere=SSUB3;
+            }
+        });
+        ssub4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                insertData(insertWhere);
+                insertWhere=SSUB4;
+            }
+        });
+        ssub5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                insertData(insertWhere);
+                insertWhere=SSUB5;
+            }
+        });
+        ssub6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertData(insertWhere);
+                insertWhere=SSUB6;
+            }
+        });
+        ssub7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertData(insertWhere);
+                insertWhere=SSUB7;
+            }
+        });
+        ssub8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertData(insertWhere);
+                insertWhere=SSUB8;
+            }
+        });
+
     }
 
-    void insertData(){
+    void insertMainData(){
         /*기간이랑 내용초기화*/
+        linearLayout=(LinearLayout)fragmentView.findViewById(R.id.term_visible);
+        linearLayout.setVisibility(View.INVISIBLE);
+
+        editText=(EditText)fragmentView.findViewById(R.id.content);
+        editText.setText("");
+
+
+    }
+    void insertData(int insertWhere){
+
         /*현재 클릭한 곳에 입력되게 해야한다*/
+
+        /*insertWhere에 editText.getText*/
+
+
+
+
+        /*기간이랑 내용초기화*/
+        linearLayout=(LinearLayout)fragmentView.findViewById(R.id.term_visible);
+        linearLayout.setVisibility(View.VISIBLE);
+
+        editText=(EditText)fragmentView.findViewById(R.id.content);
+        editText.setText("");
     }
 
     void changeView(){
