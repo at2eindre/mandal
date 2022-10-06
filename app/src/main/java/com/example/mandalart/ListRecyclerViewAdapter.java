@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerViewAdapter.ListViewHolder> {
-    ArrayList<String> title;
+    ArrayList<String> titleList;
     OnItemClickListener onItemClickListener = null;
     public class ListViewHolder extends RecyclerView.ViewHolder{
         TextView listTableTitle;
@@ -35,7 +35,7 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerVi
     }
 
     ListRecyclerViewAdapter(ArrayList<String> list){
-        title = list;
+        titleList = list;
     }
 
     @NonNull
@@ -52,13 +52,13 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerVi
 
     @Override
     public void onBindViewHolder(ListRecyclerViewAdapter.ListViewHolder holder, int position) {
-        String text = title.get(position) ;
-        holder.listTableTitle.setText(text) ;
+        String title = titleList.get(position) ;
+        holder.listTableTitle.setText(title) ;
     }
 
     @Override
     public int getItemCount() {
-        return title.size() ;
+        return titleList.size() ;
     }
 
     public interface OnItemClickListener {

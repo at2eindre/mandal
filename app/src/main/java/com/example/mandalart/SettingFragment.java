@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +29,13 @@ import androidx.fragment.app.Fragment;
 
 public class SettingFragment extends Fragment  implements OnBackPressedListener{
 
-    TextView sub1, sub2, sub3, sub4, sub5, sub6, sub7, sub8;
+    static final String LOG = "SettingFragmentLog";
+    TextView[] sub = new TextView[9];
+    TextView[] ssub = new TextView[9];
+
+    Button[] button_sub = new Button[9];
+
     TextView mon, tue, wed, thu, fri, sat, sun;
-    Button button_sub1, button_sub2, button_sub3, button_sub4, button_sub5, button_sub6, button_sub7, button_sub8;
-    TextView ssub1, ssub2, ssub3, ssub4, ssub5, ssub6, ssub7, ssub8;
     TextView sub_topic, main_theme;
     FrameLayout frameLayout;
     LayoutInflater layoutInflater;
@@ -78,22 +82,22 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
     }
 
     void mainInit(){
-        sub1 = (TextView) fragmentView.findViewById(R.id.add_sub1);
-        sub2 = (TextView) fragmentView.findViewById(R.id.add_sub2);
-        sub3 = (TextView) fragmentView.findViewById(R.id.add_sub3);
-        sub4 = (TextView) fragmentView.findViewById(R.id.add_sub4);
-        sub5 = (TextView) fragmentView.findViewById(R.id.add_sub5);
-        sub6 = (TextView) fragmentView.findViewById(R.id.add_sub6);
-        sub7 = (TextView) fragmentView.findViewById(R.id.add_sub7);
-        sub8 = (TextView) fragmentView.findViewById(R.id.add_sub8);
-        button_sub1 = (Button) fragmentView.findViewById(R.id.button_add_sub1);
-        button_sub2 = (Button) fragmentView.findViewById(R.id.button_add_sub2);
-        button_sub3 = (Button) fragmentView.findViewById(R.id.button_add_sub3);
-        button_sub4 = (Button) fragmentView.findViewById(R.id.button_add_sub4);
-        button_sub5 = (Button) fragmentView.findViewById(R.id.button_add_sub5);
-        button_sub6 = (Button) fragmentView.findViewById(R.id.button_add_sub6);
-        button_sub7 = (Button) fragmentView.findViewById(R.id.button_add_sub7);
-        button_sub8 = (Button) fragmentView.findViewById(R.id.button_add_sub8);
+        sub[1] = (TextView) fragmentView.findViewById(R.id.add_sub1);
+        sub[2] = (TextView) fragmentView.findViewById(R.id.add_sub2);
+        sub[3] = (TextView) fragmentView.findViewById(R.id.add_sub3);
+        sub[4] = (TextView) fragmentView.findViewById(R.id.add_sub4);
+        sub[5] = (TextView) fragmentView.findViewById(R.id.add_sub5);
+        sub[6] = (TextView) fragmentView.findViewById(R.id.add_sub6);
+        sub[7] = (TextView) fragmentView.findViewById(R.id.add_sub7);
+        sub[8] = (TextView) fragmentView.findViewById(R.id.add_sub8);
+        button_sub[1] = (Button) fragmentView.findViewById(R.id.button_add_sub1);
+        button_sub[2] = (Button) fragmentView.findViewById(R.id.button_add_sub2);
+        button_sub[3] = (Button) fragmentView.findViewById(R.id.button_add_sub3);
+        button_sub[4] = (Button) fragmentView.findViewById(R.id.button_add_sub4);
+        button_sub[5] = (Button) fragmentView.findViewById(R.id.button_add_sub5);
+        button_sub[6] = (Button) fragmentView.findViewById(R.id.button_add_sub6);
+        button_sub[7] = (Button) fragmentView.findViewById(R.id.button_add_sub7);
+        button_sub[8] = (Button) fragmentView.findViewById(R.id.button_add_sub8);
 
         main_theme = (TextView)fragmentView.findViewById(R.id.add_main_theme);
 
@@ -103,146 +107,31 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
         linearLayout.setVisibility(View.INVISIBLE);
 
         editText=(EditText)fragmentView.findViewById(R.id.content);
-        editText.setText(sub1.getText());
+        editText.setText(sub[1].getText());
 
+        for(int i = 1; i < 9; i++) {
+            int finalI = i;
+            sub[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    savePrev(insertWhere);
 
-        sub1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
+                    insertWhere=SSUB1;
+                    editText.setText(sub[finalI].getText());
+                }
+            });
+        }
+        for(int i = 1; i < 9; i++){
+            int finalI = i;
+            button_sub[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    savePrev(insertWhere);
 
-                insertWhere=SSUB1;
-                editText.setText(sub1.getText());
-            }
-        });
-        sub2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB2;
-                editText.setText(sub2.getText());
-            }
-        });
-        sub3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB3;
-                editText.setText(sub3.getText());
-            }
-        });
-        sub4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB4;
-                editText.setText(sub4.getText());
-            }
-        });
-        sub5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB5;
-                editText.setText(sub5.getText());
-            }
-        });
-        sub6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB6;
-                editText.setText(sub6.getText());
-            }
-        });
-        sub7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB7;
-                editText.setText(sub7.getText());
-            }
-        });
-        sub8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB8;
-                editText.setText(sub8.getText());
-            }
-        });
-
-        button_sub1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                changeView(SSUB1);
-            }
-        });
-        button_sub2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                changeView(SSUB2);
-            }
-        });
-        button_sub3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                changeView(SSUB3);
-            }
-        });
-        button_sub4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                changeView(SSUB4);
-            }
-        });
-        button_sub5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                changeView(SSUB5);
-            }
-        });
-        button_sub6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                changeView(SSUB6);
-            }
-        });
-        button_sub7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                changeView(SSUB7);
-            }
-        });
-        button_sub8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                changeView(SSUB8);
-            }
-        });
+                    changeView(finalI);
+                }
+            });
+        }
 
         mon = (TextView) fragmentView.findViewById(R.id.mon);
         tue = (TextView) fragmentView.findViewById(R.id.tue);
@@ -256,13 +145,13 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
             @Override
             public void onClick(View view) {
                 //색깔 확인
-                if((DAYS & (1 << 0))==0){
+                if ((DAYS & (1 << 0)) == 0) {
                     mon.setTypeface(Typeface.SANS_SERIF);
-                }
-                else {
+                } else {
                     mon.setTypeface(Typeface.DEFAULT);
                 }
-                DAYS=DAYS|(1 << 0);
+                DAYS = DAYS ^ (1 << 0);
+                Log.i(LOG, "DAYS : "+DAYS );
             }
         });
         tue.setOnClickListener(new View.OnClickListener() {
@@ -275,7 +164,9 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
                 else {
                     tue.setTypeface(Typeface.DEFAULT);
                 }
-                DAYS=DAYS|(1 << 1);
+                DAYS=DAYS^(1 << 1);
+                Log.i(LOG, "DAYS : "+DAYS );
+
             }
         });
         wed.setOnClickListener(new View.OnClickListener() {
@@ -288,7 +179,9 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
                 else {
                     wed.setTypeface(Typeface.DEFAULT);
                 }
-                DAYS=DAYS|(1 << 2);
+                DAYS=DAYS^(1 << 2);
+                Log.i(LOG, "DAYS : "+DAYS );
+
             }
         });
         thu.setOnClickListener(new View.OnClickListener() {
@@ -296,12 +189,14 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
             public void onClick(View view) {
                 //색깔 확인
                 if((DAYS & (1 << 3))==0){
-                    wed.setTypeface(Typeface.SANS_SERIF);
+                    thu.setTypeface(Typeface.SANS_SERIF);
                 }
                 else {
-                    wed.setTypeface(Typeface.DEFAULT);
+                    thu.setTypeface(Typeface.DEFAULT);
                 }
-                DAYS=DAYS|(1 << 3);
+                DAYS=DAYS^(1 << 3);
+                Log.i(LOG, "DAYS : "+DAYS );
+
             }
         });
         fri.setOnClickListener(new View.OnClickListener() {
@@ -314,7 +209,9 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
                 else {
                     fri.setTypeface(Typeface.DEFAULT);
                 }
-                DAYS=DAYS|(1 << 4);
+                DAYS=DAYS^(1 << 4);
+                Log.i(LOG, "DAYS : "+DAYS );
+
             }
         });
         sat.setOnClickListener(new View.OnClickListener() {
@@ -327,7 +224,9 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
                 else {
                     sat.setTypeface(Typeface.DEFAULT);
                 }
-                DAYS=DAYS|(1 << 5);
+                DAYS=DAYS^(1 << 5);
+                Log.i(LOG, "DAYS : "+DAYS );
+
             }
         });
         sun.setOnClickListener(new View.OnClickListener() {
@@ -340,20 +239,22 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
                 else {
                     sun.setTypeface(Typeface.DEFAULT);
                 }
-                DAYS=DAYS|(1 << 6);
+                DAYS=DAYS^(1 << 6);
+                Log.i(LOG, "DAYS : "+DAYS );
+
             }
         });
     }
 
     void subInit(int now){
-        ssub1 = (TextView) fragmentView.findViewById(R.id.add_ssub1);
-        ssub2 = (TextView) fragmentView.findViewById(R.id.add_ssub2);
-        ssub3 = (TextView) fragmentView.findViewById(R.id.add_ssub3);
-        ssub4 = (TextView) fragmentView.findViewById(R.id.add_ssub4);
-        ssub5 = (TextView) fragmentView.findViewById(R.id.add_ssub5);
-        ssub6 = (TextView) fragmentView.findViewById(R.id.add_ssub6);
-        ssub7 = (TextView) fragmentView.findViewById(R.id.add_ssub7);
-        ssub8 = (TextView) fragmentView.findViewById(R.id.add_ssub8);
+        ssub[1] = (TextView) fragmentView.findViewById(R.id.add_ssub1);
+        ssub[2] = (TextView) fragmentView.findViewById(R.id.add_ssub2);
+        ssub[3] = (TextView) fragmentView.findViewById(R.id.add_ssub3);
+        ssub[4] = (TextView) fragmentView.findViewById(R.id.add_ssub4);
+        ssub[5] = (TextView) fragmentView.findViewById(R.id.add_ssub5);
+        ssub[6] = (TextView) fragmentView.findViewById(R.id.add_ssub6);
+        ssub[7] = (TextView) fragmentView.findViewById(R.id.add_ssub7);
+        ssub[8] = (TextView) fragmentView.findViewById(R.id.add_ssub8);
 
         sub_topic = (TextView)fragmentView.findViewById(R.id.add_sub_topic);
 
@@ -370,88 +271,20 @@ public class SettingFragment extends Fragment  implements OnBackPressedListener{
         linearLayout.setVisibility(View.VISIBLE);
 
         editText=(EditText)fragmentView.findViewById(R.id.content);
-        editText.setText(ssub1.getText());
+        editText.setText(ssub[1].getText());
 
-        ssub1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
+        for(int i = 1; i < 9; i++){
+            int finalI = i;
+            ssub[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    savePrev(insertWhere);
 
-                insertWhere=SSUB1;
-                editText.setText(ssub1.getText());
-                //월~일도 불러오기
-            }
-        });
-        ssub2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB2;
-                editText.setText(ssub2.getText());
-                //월~일도 불러오기
-            }
-        });
-        ssub3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB3;
-                editText.setText(ssub3.getText());
-                //월~일도 불러오기
-            }
-        });
-        ssub4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB4;
-                editText.setText(ssub4.getText());
-                //월~일도 불러오기
-            }
-        });
-        ssub5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB5;
-                editText.setText(ssub5.getText());
-                //월~일도 불러오기
-            }
-        });
-        ssub6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB6;
-                editText.setText(ssub6.getText());
-                //월~일도 불러오기
-            }
-        });
-        ssub7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB7;
-                editText.setText(ssub7.getText());
-                //월~일도 불러오기
-            }
-        });
-        ssub8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savePrev(insertWhere);
-
-                insertWhere=SSUB8;
-                editText.setText(ssub8.getText());
-                //월~일도 불러오기
-            }
-        });
+                    insertWhere=SSUB1;
+                    editText.setText(ssub[finalI].getText());
+                }
+            });
+        }
 
     }
 

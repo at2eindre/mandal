@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,8 +17,15 @@ import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
 
+    static final String LOG = "ListActivityLog";
+    static final int ADD_TABLE = 3;
+
     DBHelper dbHelper;
     SQLiteDatabase sqLiteDatabase;
+    ImageView addTable;
+
+    ArrayList<String> tableList = new ArrayList<>();
+    ArrayList<String> tableId = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +35,26 @@ public class ListActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
-        ArrayList<String> tableList = new ArrayList<>();
-        ArrayList<String> tableId = new ArrayList<>();
+        addTable = (ImageView)findViewById(R.id.add_table);
 
+        getTableList();
+
+        addTable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toAddTable();
+            }
+        });
+    }
+
+    public void toAddTable(){
+        Intent intent = new Intent(this, AddTableActivity.class);
+        Log.i(LOG, "addTable");
+        startActivityForResult(intent, ADD_TABLE);
+
+    }
+
+    public void getTableList(){
         String tableSelect = "SELECT * FROM " + dbHelper.TABLE_MAIN + ";";
         Cursor tableCursor = sqLiteDatabase.rawQuery(tableSelect, null);
         while(tableCursor.moveToNext()){
@@ -50,6 +77,15 @@ public class ListActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_TABLE) {
+            if (resultCode == RESULT_OK) {
+                getTableList();
+            }
+        }
     }
 }
