@@ -205,6 +205,7 @@ public class AddTableActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     savePrev(insertWhere);
+                    resetDay(1);
 
                     changeView(finalI);
                 }
@@ -218,6 +219,9 @@ public class AddTableActivity extends AppCompatActivity {
         fri = (TextView)findViewById(R.id.fri);
         sat = (TextView)findViewById(R.id.sat);
         sun = (TextView)findViewById(R.id.sun);
+
+        resetDay(1);
+
         //색 클릭 처리 해줘야함
         mon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -328,7 +332,6 @@ public class AddTableActivity extends AppCompatActivity {
         ssub[8] = (TextView)findViewById(R.id.add_ssub8);
 
         sub_topic = (TextView)findViewById(R.id.add_sub_topic);
-
         //now꺼 데이터 불러오기 ssub1~8, sub_topic에!
         getSubMandalArt(topicId.get(now));
 
@@ -351,6 +354,7 @@ public class AddTableActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     savePrev(insertWhere);
+                    resetDay(finalI);
 
                     insertWhere = finalI;
                     editText.setText(ssub[finalI].getText());
@@ -358,6 +362,18 @@ public class AddTableActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    void resetDay(int i){
+        //i의 계획에 저장된 day 끌어오기
+        //지금은 그냥 리셋
+        mon.setPaintFlags(mon.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+        tue.setPaintFlags(tue.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+        wed.setPaintFlags(wed.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+        thu.setPaintFlags(thu.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+        fri.setPaintFlags(fri.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+        sat.setPaintFlags(sat.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+        sun.setPaintFlags(sun.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
     }
 
     void savePrev(int insertWhere){
