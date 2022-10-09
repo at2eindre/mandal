@@ -178,6 +178,7 @@ public class AddTableActivity extends AppCompatActivity {
 
         main_theme = (TextView)findViewById(R.id.add_main_theme);
 
+
         //여기서 sub1~8이랑 main_theme 불러오기 필요
         getMainMandalArt(tableId);
 
@@ -187,6 +188,15 @@ public class AddTableActivity extends AppCompatActivity {
         editText=(EditText)findViewById(R.id.content);
         editText.setText(sub[1].getText());
 
+        main_theme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savePrev(insertWhere);
+
+                insertWhere=0;
+                editText.setText(main_theme.getText());
+            }
+        });
         for(int i = 1; i <= COUNT; i++) {
             int finalI = i;
             sub[i].setOnClickListener(new View.OnClickListener() {
@@ -194,7 +204,7 @@ public class AddTableActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     savePrev(insertWhere);
 
-                    insertWhere=SSUB1;
+                    insertWhere=finalI;
                     editText.setText(sub[finalI].getText());
                 }
             });
@@ -338,6 +348,8 @@ public class AddTableActivity extends AppCompatActivity {
         sub_topic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                savePrev(insertWhere);
+
                 changeBackView();
             }
         });
@@ -379,11 +391,15 @@ public class AddTableActivity extends AppCompatActivity {
     void savePrev(int insertWhere){
         if(currentMode == MAIN_MODE){
             //MAIN_MODE, insertWhere, editText.getText 입력
+            //insertWhere=0이면 MAIN_THEME에 저장하면 된다!
 
+            if(insertWhere>0)sub[insertWhere].setText(editText.getText());
+            else main_theme.setText(editText.getText());
         }
         else if(currentMode == SUB_MODE){
             //SUB_MODE, insertWhere, editText.getText, 날짜입력처리해서 입력
 
+            ssub[insertWhere].setText(editText.getText());
         }
     }
 
@@ -395,10 +411,8 @@ public class AddTableActivity extends AppCompatActivity {
     }
 
     void changeBackView(){
-        savePrev(insertWhere);
-
-        insertWhere = SSUB1;
         currentMode = MAIN_MODE;
+        insertWhere = SSUB1;
 
         getMandalArtView(0);
     }
