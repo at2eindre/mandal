@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -223,9 +224,9 @@ public class AddTableActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //색깔 확인
                 if ((DAYS & (1 << 0)) == 0) {
-                    mon.setTypeface(Typeface.SANS_SERIF);
+                    mon.setPaintFlags(mon.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
                 } else {
-                    mon.setTypeface(Typeface.DEFAULT);
+                    mon.setPaintFlags(mon.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
                 }
                 DAYS = DAYS ^ (1 << 0);
             }
@@ -235,10 +236,10 @@ public class AddTableActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //색깔 확인
                 if((DAYS & (1 << 1))==0){
-                    tue.setTypeface(Typeface.SANS_SERIF);
+                    tue.setPaintFlags(tue.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
                 }
                 else {
-                    tue.setTypeface(Typeface.DEFAULT);
+                    tue.setPaintFlags(tue.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
                 }
                 DAYS=DAYS^(1 << 1);
 
@@ -249,10 +250,10 @@ public class AddTableActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //색깔 확인
                 if((DAYS & (1 << 2))==0){
-                    wed.setTypeface(Typeface.SANS_SERIF);
+                    wed.setPaintFlags(wed.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
                 }
                 else {
-                    wed.setTypeface(Typeface.DEFAULT);
+                    wed.setPaintFlags(wed.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
                 }
                 DAYS=DAYS^(1 << 2);
 
@@ -263,10 +264,10 @@ public class AddTableActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //색깔 확인
                 if((DAYS & (1 << 3))==0){
-                    thu.setTypeface(Typeface.SANS_SERIF);
+                    thu.setPaintFlags(thu.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
                 }
                 else {
-                    thu.setTypeface(Typeface.DEFAULT);
+                    thu.setPaintFlags(thu.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
                 }
                 DAYS=DAYS^(1 << 3);
 
@@ -277,10 +278,10 @@ public class AddTableActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //색깔 확인
                 if((DAYS & (1 << 4))==0){
-                    fri.setTypeface(Typeface.SANS_SERIF);
+                    fri.setPaintFlags(fri.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
                 }
                 else {
-                    fri.setTypeface(Typeface.DEFAULT);
+                    fri.setPaintFlags(fri.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
                 }
                 DAYS=DAYS^(1 << 4);
 
@@ -291,10 +292,10 @@ public class AddTableActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //색깔 확인
                 if((DAYS & (1 << 5))==0){
-                    sat.setTypeface(Typeface.SANS_SERIF);
+                    sat.setPaintFlags(sat.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
                 }
                 else {
-                    sat.setTypeface(Typeface.DEFAULT);
+                    sat.setPaintFlags(sat.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
                 }
                 DAYS=DAYS^(1 << 5);
 
@@ -305,10 +306,10 @@ public class AddTableActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //색깔 확인
                 if((DAYS & (1 << 6))==0){
-                    sun.setTypeface(Typeface.SANS_SERIF);
+                    sun.setPaintFlags(sun.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
                 }
                 else {
-                    sun.setTypeface(Typeface.DEFAULT);
+                    sun.setPaintFlags(sun.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
                 }
                 DAYS=DAYS^(1 << 6);
 
