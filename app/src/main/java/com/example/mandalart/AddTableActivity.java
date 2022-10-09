@@ -423,7 +423,6 @@ public class AddTableActivity extends AppCompatActivity {
             }
         });
 
-        linearLayout=(LinearLayout)findViewById(R.id.term_visible);
         linearLayout.setVisibility(View.VISIBLE);
 
         editText=(EditText)findViewById(R.id.content);

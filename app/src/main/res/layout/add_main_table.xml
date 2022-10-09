@@ -32,6 +32,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="1번"
+                    android:hint="소주제를\n입력하세요"
                     android:clickable="true"
                     />
                 <Button
@@ -54,6 +55,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="2번"
+                    android:hint="소주제를\n입력하세요"
                     android:clickable="true"
                     />
                 <Button
@@ -77,6 +79,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="3번"
+                    android:hint="소주제를\n입력하세요"
                     android:clickable="true"
                     />
                 <Button
@@ -106,6 +109,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="4번"
+                    android:hint="소주제를\n입력하세요"
                     android:clickable="true"
                     />
                 <Button
@@ -121,7 +125,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="main"/>
+                android:text="main"
+                android:hint="최종목표를\n입력하세요"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -136,6 +141,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="5번"
+                    android:hint="소주제를\n입력하세요"
                     android:clickable="true"
                     />
                 <Button
@@ -166,6 +172,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="6번"
+                    android:hint="소주제를\n입력하세요"
                     android:clickable="true"
                     />
                 <Button
@@ -188,6 +195,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="7번"
+                    android:hint="소주제를\n입력하세요"
                     android:clickable="true"
                     />
                 <Button
@@ -211,6 +219,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="8번"
+                    android:hint="소주제를\n입력하세요"
                     android:clickable="true"
                     />
                 <Button
