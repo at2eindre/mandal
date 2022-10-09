@@ -45,6 +45,8 @@ public class AddTableActivity extends AppCompatActivity {
 
     ArrayList<String> topicId = new ArrayList<>();
 
+    ArrayList<String> planId = new ArrayList<>();
+
     static final int MAIN_MODE = 0;
     static final int SUB_MODE = 1;
     static final int SSUB1 = 1;
@@ -144,18 +146,33 @@ public class AddTableActivity extends AppCompatActivity {
         sqLiteDatabase.execSQL(insertTableId);
     }
 
-    public void insertTopicId(ArrayList arrayList){
-        //sub table 생성
-        for(int i = 1; i<= COUNT; i++) {
-            String insertSub = "INSERT INTO " + DBHelper.TABLE_SUB + "(" + DBHelper.ID + ", " +
-                    DBHelper.TOPIC_ID_1 + ", " + DBHelper.TOPIC_ID_2 + ", " + DBHelper.TOPIC_ID_3 + ", " +
-                    DBHelper.TOPIC_ID_4 + ", " + DBHelper.TOPIC_ID_5 + ", " + DBHelper.TOPIC_ID_6 + ", " +
-                    DBHelper.TOPIC_ID_7 + ", " + DBHelper.TOPIC_ID_8 + ") VALUES (" + tableId + ", " +
-                    topicId.get(SSUB1) + ", " + topicId.get(SSUB2) + ", " + topicId.get(SSUB3) + ", " +
-                    topicId.get(SSUB4) + ", " + topicId.get(SSUB5) + ", " + topicId.get(SSUB6) + ", " +
-                    topicId.get(SSUB7) + ", " + topicId.get(SSUB8) + ")";
-            sqLiteDatabase.execSQL(insertSub);
+    public void insertTopicId(ArrayList arrayList) {
+        String insertSub = "INSERT INTO " + DBHelper.TABLE_SUB + "(" + DBHelper.ID + ", " +
+                DBHelper.TOPIC_ID_1 + ", " + DBHelper.TOPIC_ID_2 + ", " + DBHelper.TOPIC_ID_3 + ", " +
+                DBHelper.TOPIC_ID_4 + ", " + DBHelper.TOPIC_ID_5 + ", " + DBHelper.TOPIC_ID_6 + ", " +
+                DBHelper.TOPIC_ID_7 + ", " + DBHelper.TOPIC_ID_8 + ") VALUES (" + tableId + ", " +
+                topicId.get(SSUB1) + ", " + topicId.get(SSUB2) + ", " + topicId.get(SSUB3) + ", " +
+                topicId.get(SSUB4) + ", " + topicId.get(SSUB5) + ", " + topicId.get(SSUB6) + ", " +
+                topicId.get(SSUB7) + ", " + topicId.get(SSUB8) + ")";
+        sqLiteDatabase.execSQL(insertSub);
+
+        for(int i = 1; i <= COUNT; i++){
+            String insertTopics = "INSERT INTO " + DBHelper.TABLE_TOPICS + "(" + DBHelper.TOPIC_ID + ", " +
+                   DBHelper.TOPIC + ") VALUES (" + topicId.get(i) + ", " + NULL + ")";
+            sqLiteDatabase.execSQL(insertTopics);
         }
+    }
+
+    public void topicsUpdate(int insertWhere){
+        String updateTopics = "UPDATE " + DBHelper.TABLE_TOPICS + " SET " + DBHelper.TOPIC+ " = '" + sub[insertWhere].getText() + "'" +
+                " WHERE " + DBHelper.TOPIC_ID + " = '" + topicId.get(insertWhere) + "'";
+        sqLiteDatabase.execSQL(updateTopics);
+    }
+
+    public void plansUpdate(int insertWhere){
+        String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.PLAN_NAME+ " = '" + ssub[insertWhere].getText() + "'" + ", " +
+                DBHelper.PLAN_TERM + " = " + "'기간'" + ", " + " WHERE " + DBHelper.PLAN_ID + " = '" + "planid" + "'";
+        sqLiteDatabase.execSQL(updatePlans);
     }
 
     void mainInit(){
@@ -379,11 +396,11 @@ public class AddTableActivity extends AppCompatActivity {
     void savePrev(int insertWhere){
         if(currentMode == MAIN_MODE){
             //MAIN_MODE, insertWhere, editText.getText 입력
-
+            topicsUpdate(insertWhere);
         }
         else if(currentMode == SUB_MODE){
             //SUB_MODE, insertWhere, editText.getText, 날짜입력처리해서 입력
-
+            plansUpdate(insertWhere);
         }
     }
 
