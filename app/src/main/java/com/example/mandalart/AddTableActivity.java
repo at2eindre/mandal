@@ -261,7 +261,6 @@ public class AddTableActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePrev(insertWhere, subWhere);
-
                 insertWhere=0;
                 editText.setText(main_theme.getText());
             }
@@ -272,7 +271,6 @@ public class AddTableActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     savePrev(insertWhere, subWhere);
-                    subWhere = finalI;
                     insertWhere=finalI;
                     editText.setText(sub[finalI].getText());
                 }
@@ -284,6 +282,7 @@ public class AddTableActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     savePrev(insertWhere, subWhere);
+                    subWhere = finalI;
                     resetDay(1);
 
                     changeView(finalI);
