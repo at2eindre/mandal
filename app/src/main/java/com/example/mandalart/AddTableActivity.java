@@ -224,9 +224,10 @@ public class AddTableActivity extends AppCompatActivity {
         sqLiteDatabase.execSQL(updateTopics);
     }
 
-    public void plansUpdate(int insertWhere, int subWhere, int days){
-        String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.PLAN_NAME+ " = '" + ssub[insertWhere].getText() + "'" + ", " +
-                DBHelper.PLAN_TERM + " = '"+ Integer.toString(days)+"' WHERE " + DBHelper.PLAN_ID + " = '" + planId[subWhere].get(insertWhere) + "'";
+    public void plansUpdate(int insertWhere, int subWhere){
+        String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.PLAN_NAME+ " = '" + ssub[insertWhere].getText() + "', " +
+                DBHelper.PLAN_TERM + " = '" + DAYS  + "'," + DBHelper.COMPLETE + " = " + DAYS +
+                " WHERE " + DBHelper.PLAN_ID + " = '" + planId[subWhere].get(insertWhere) + "'";
         sqLiteDatabase.execSQL(updatePlans);
     }
 
@@ -406,7 +407,7 @@ public class AddTableActivity extends AppCompatActivity {
             //SUB_MODE, insertWhere, editText.getText, 날짜입력처리해서 입력
 
             ssub[insertWhere].setText(editText.getText());
-            plansUpdate(insertWhere, subWhere, DAYS);
+            plansUpdate(insertWhere, subWhere);
         }
     }
 
