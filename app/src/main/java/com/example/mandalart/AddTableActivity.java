@@ -34,7 +34,8 @@ public class AddTableActivity extends AppCompatActivity {
     TextView[] ssub = new TextView[9];
     Button[] button_sub = new Button[9];
 
-    TextView mon, tue, wed, thu, fri, sat, sun;
+    TextView[] montosun=new TextView[8];
+
     TextView sub_topic, main_theme;
     FrameLayout frameLayout;
     LayoutInflater layoutInflater;
@@ -58,6 +59,7 @@ public class AddTableActivity extends AppCompatActivity {
     static final int SSUB7 = 7;
     static final int SSUB8 = 8;
     static final int COUNT = 8;
+    static final int DAYCOUNT = 6;
     static final String NULL = "null";
 
     int currentMode = MAIN_MODE;
@@ -222,9 +224,9 @@ public class AddTableActivity extends AppCompatActivity {
         sqLiteDatabase.execSQL(updateTopics);
     }
 
-    public void plansUpdate(int insertWhere, int subWhere){
+    public void plansUpdate(int insertWhere, int subWhere, int days){
         String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.PLAN_NAME+ " = '" + ssub[insertWhere].getText() + "'" + ", " +
-                DBHelper.PLAN_TERM + " = " + "'기간'" + " WHERE " + DBHelper.PLAN_ID + " = '" + planId[subWhere].get(insertWhere) + "'";
+                DBHelper.PLAN_TERM + " = '"+ Integer.toString(days)+"' WHERE " + DBHelper.PLAN_ID + " = '" + planId[subWhere].get(insertWhere) + "'";
         sqLiteDatabase.execSQL(updatePlans);
     }
 
@@ -284,120 +286,39 @@ public class AddTableActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     savePrev(insertWhere, subWhere);
-                    resetDay(1);
+                    resetDay(Integer.toString(finalI),1);
 
+                    subWhere=finalI;
                     changeView(finalI);
                 }
             });
         }
 
-        mon = (TextView)findViewById(R.id.mon);
-        tue = (TextView)findViewById(R.id.tue);
-        wed = (TextView)findViewById(R.id.wed);
-        thu = (TextView)findViewById(R.id.thu);
-        fri = (TextView)findViewById(R.id.fri);
-        sat = (TextView)findViewById(R.id.sat);
-        sun = (TextView)findViewById(R.id.sun);
+        montosun[0] = (TextView)findViewById(R.id.mon);
+        montosun[1] = (TextView)findViewById(R.id.tue);
+        montosun[2] = (TextView)findViewById(R.id.wed);
+        montosun[3] = (TextView)findViewById(R.id.thu);
+        montosun[4] = (TextView)findViewById(R.id.fri);
+        montosun[5] = (TextView)findViewById(R.id.sat);
+        montosun[6] = (TextView)findViewById(R.id.sun);
 
-        resetDay(1);
 
-        //색 클릭 처리 해줘야함
-        mon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //색깔 확인
-                if ((DAYS & (1 << 0)) == 0) {
-                    mon.setPaintFlags(mon.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
-                } else {
-                    mon.setPaintFlags(mon.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+        for(int i = 0; i <= DAYCOUNT; i++){
+            int finalI=i;
+            montosun[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //색깔 확인
+                    if ((DAYS & (1 << finalI)) == 0) {
+                        montosun[finalI].setPaintFlags(montosun[finalI].getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
+                    } else {
+                        montosun[finalI].setPaintFlags(montosun[finalI].getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+                    }
+                    DAYS = DAYS ^ (1 << finalI);
                 }
-                DAYS = DAYS ^ (1 << 0);
-            }
-        });
-        tue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //색깔 확인
-                if((DAYS & (1 << 1))==0){
-                    tue.setPaintFlags(tue.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
-                }
-                else {
-                    tue.setPaintFlags(tue.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-                }
-                DAYS=DAYS^(1 << 1);
+            });
+        }
 
-            }
-        });
-        wed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //색깔 확인
-                if((DAYS & (1 << 2))==0){
-                    wed.setPaintFlags(wed.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
-                }
-                else {
-                    wed.setPaintFlags(wed.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-                }
-                DAYS=DAYS^(1 << 2);
-
-            }
-        });
-        thu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //색깔 확인
-                if((DAYS & (1 << 3))==0){
-                    thu.setPaintFlags(thu.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
-                }
-                else {
-                    thu.setPaintFlags(thu.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-                }
-                DAYS=DAYS^(1 << 3);
-
-            }
-        });
-        fri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //색깔 확인
-                if((DAYS & (1 << 4))==0){
-                    fri.setPaintFlags(fri.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
-                }
-                else {
-                    fri.setPaintFlags(fri.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-                }
-                DAYS=DAYS^(1 << 4);
-
-            }
-        });
-        sat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //색깔 확인
-                if((DAYS & (1 << 5))==0){
-                    sat.setPaintFlags(sat.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
-                }
-                else {
-                    sat.setPaintFlags(sat.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-                }
-                DAYS=DAYS^(1 << 5);
-
-            }
-        });
-        sun.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //색깔 확인
-                if((DAYS & (1 << 6))==0){
-                    sun.setPaintFlags(sun.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
-                }
-                else {
-                    sun.setPaintFlags(sun.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-                }
-                DAYS=DAYS^(1 << 6);
-
-            }
-        });
     }
 
     void subInit(int now){
@@ -434,7 +355,7 @@ public class AddTableActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     savePrev(insertWhere, subWhere);
-                    resetDay(finalI);
+                    resetDay(topicId.get(now),finalI);
 
                     insertWhere = finalI;
                     editText.setText(ssub[finalI].getText());
@@ -444,16 +365,26 @@ public class AddTableActivity extends AppCompatActivity {
 
     }
 
-    void resetDay(int i){
+    void resetDay(String topicId, int i){
         //i의 계획에 저장된 day 끌어오기
-        //지금은 그냥 리셋
-        mon.setPaintFlags(mon.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-        tue.setPaintFlags(tue.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-        wed.setPaintFlags(wed.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-        thu.setPaintFlags(thu.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-        fri.setPaintFlags(fri.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-        sat.setPaintFlags(sat.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
-        sun.setPaintFlags(sun.getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+
+        String topicSelect = "SELECT * FROM " + dbHelper.TABLE_SSUB + " WHERE " + dbHelper.TOPIC_ID + " = '"  + topicId + "';";
+        Cursor topicCursor = sqLiteDatabase.rawQuery(topicSelect, null);
+        if(topicCursor.moveToNext()){
+            String planId = topicCursor.getString(i);
+            String planSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " + dbHelper.PLAN_ID + " = '" + planId + "';";
+            Cursor planCursor = sqLiteDatabase.rawQuery(planSelect, null);
+            if (planCursor.moveToNext()) {
+                DAYS = Integer.parseInt(planCursor.getString(2));
+                for(int ii = 0; ii <= DAYCOUNT; ii++) {
+                    if ((DAYS & (1 << ii)) == 1) {
+                        montosun[ii].setPaintFlags(montosun[ii].getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    } else {
+                        montosun[ii].setPaintFlags(montosun[ii].getPaintFlags() & ~Paint.UNDERLINE_TEXT_FLAG);
+                    }
+                }
+            }
+        }
     }
 
     void savePrev(int insertWhere, int subWhere){
@@ -475,7 +406,7 @@ public class AddTableActivity extends AppCompatActivity {
             //SUB_MODE, insertWhere, editText.getText, 날짜입력처리해서 입력
 
             ssub[insertWhere].setText(editText.getText());
-            plansUpdate(insertWhere, subWhere);
+            plansUpdate(insertWhere, subWhere, DAYS);
         }
     }
 
