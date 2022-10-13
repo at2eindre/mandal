@@ -376,7 +376,7 @@ public class AddTableActivity extends AppCompatActivity {
             String planSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " + dbHelper.PLAN_ID + " = '" + planId + "';";
             Cursor planCursor = sqLiteDatabase.rawQuery(planSelect, null);
             if (planCursor.moveToNext()) {
-                DAYS = Integer.parseInt(planCursor.getString(2));
+                DAYS = planCursor.getInt(2);
                 for(int ii = 0; ii <= DAYCOUNT; ii++) {
                     if ((DAYS & (1 << ii)) == 1) {
                         montosun[ii].setPaintFlags(montosun[ii].getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
