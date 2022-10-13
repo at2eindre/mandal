@@ -14,6 +14,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_SSUB = "ssub";
     public static final String TABLE_TOPICS = "topics";
     public static final String TABLE_PLANS = "plans";
+    public static final String TABLE_DAYS = "days";
+
 
     public static final String ID = "id";
     public static final String TITLE = "title";
@@ -47,6 +49,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PLAN_TERM = "planTerm";
     public static final String COMPLETE = "complete";
 
+    public static final String DATE = "planDate";
+    public static final String CHECK = "planCheck";
+
     static final String MAIN_CREATE = "CREATE TABLE if not exists " +
             TABLE_MAIN + "(" + ID + " TEXT, " + TITLE + " TEXT, " +
             TERM + " TEXT, " + COLOR + " TEXT, " + THEME + " TEXT);";
@@ -68,7 +73,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     static final String PLANS_CREATE = "CREATE TABLE if not exists " +
             TABLE_PLANS +"(" + PLAN_ID + " TEXT, " + PLAN_NAME + " TEXT, " +
-            PLAN_TERM + " TEXT, " + COMPLETE + " INTEGER);";
+            PLAN_TERM + " INTEGER, " + COMPLETE + " INTEGER);";
+
+    static final String DAYS_CREATE = "CREATE TABLE if not exists " +
+            TABLE_DAYS +"(" + DATE + " TEXT, " + PLAN_ID + " TEXT, " + PLAN_NAME + " TEXT, " +
+            CHECK + " INTEGER);";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -81,6 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(TOPICS_CREATE);
         sqLiteDatabase.execSQL(SSUB_CRATE);
         sqLiteDatabase.execSQL(PLANS_CREATE);
+        sqLiteDatabase.execSQL(DAYS_CREATE);
     }
 
     @Override
