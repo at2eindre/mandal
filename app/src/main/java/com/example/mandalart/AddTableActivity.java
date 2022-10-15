@@ -518,12 +518,39 @@ public class AddTableActivity extends AppCompatActivity {
         return true;
     }
 
+    public void deleteTopics() {
+        String deleteSub = "DELETE FROM " + dbHelper.TABLE_SUB + " WHERE " + dbHelper.ID +" = '" + tableId + "';";
+        sqLiteDatabase.execSQL(deleteSub);
+
+        for(int i = 1; i <= COUNT; i++){
+            String deleteTopics = "DELETE FROM " + dbHelper.TABLE_TOPICS + " WHERE " + dbHelper.TOPIC_ID +
+                    " = '" + topicId.get(i) + "';";
+            sqLiteDatabase.execSQL(deleteTopics);
+        }
+    }
+
+    public void deletePlans(){
+        for(int i = 1; i<= COUNT ; i++) {
+            String deleteSsub = "DELETE FROM " + dbHelper.TABLE_SSUB + " WHERE " + dbHelper.TOPIC_ID +
+                    " = '" + topicId.get(i) + "';";
+            sqLiteDatabase.execSQL(deleteSsub);
+        }
+
+        for(int i = 1; i <= COUNT; i++){
+            for(int j = 1; j <= COUNT; j++) {
+                String deletePlans = "DELETE FROM " + dbHelper.TABLE_PLANS + " WHERE " + dbHelper.PLAN_ID +
+                        " = '" + planId[i].get(j) + "';";
+                sqLiteDatabase.execSQL(deletePlans);
+            }
+        }
+    }
+
     @Override
     public void onBackPressed(){
-        //delete
         String notSave = "DELETE FROM " + dbHelper.TABLE_MAIN + " WHERE " + dbHelper.ID +" = '" + tableId + "';";
-        Cursor notSaveCursor = sqLiteDatabase.rawQuery(notSave, null);
-        notSaveCursor.moveToNext();
-
+        sqLiteDatabase.execSQL(notSave);
+        deleteTopics();
+        deletePlans();
+        super.onBackPressed();
     }
 }
