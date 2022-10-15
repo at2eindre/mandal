@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -509,4 +510,12 @@ public class AddTableActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed(){
+        //delete
+        String notSave = "DELETE FROM " + dbHelper.TABLE_MAIN + " WHERE " + dbHelper.ID +" = '" + tableId + "';";
+        Cursor notSaveCursor = sqLiteDatabase.rawQuery(notSave, null);
+        notSaveCursor.moveToNext();
+
+    }
 }
