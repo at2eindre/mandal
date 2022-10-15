@@ -49,7 +49,6 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toAddTable();
-                getTableList();
             }
         });
     }
@@ -62,6 +61,8 @@ public class ListActivity extends AppCompatActivity {
     }
 
     public void getTableList(){
+        tableId.clear();
+        tableList.clear();
         String tableSelect = "SELECT * FROM " + dbHelper.TABLE_MAIN + ";";
         Cursor tableCursor = sqLiteDatabase.rawQuery(tableSelect, null);
         while(tableCursor.moveToNext()){
