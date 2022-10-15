@@ -42,6 +42,7 @@ public class AddTableActivity extends AppCompatActivity {
     View frameView;
     LinearLayout linearLayout;
     EditText editText;
+    Button save;
     int DAYS=0;
 
     ArrayList<String> topicId = new ArrayList<>();
@@ -250,6 +251,7 @@ public class AddTableActivity extends AppCompatActivity {
         button_sub[8] = (Button)findViewById(R.id.button_add_sub8);
 
         main_theme = (TextView)findViewById(R.id.add_main_theme);
+        save=(Button)findViewById(R.id.save_button);
 
         //여기서 sub1~8이랑 main_theme 불러오기 필요
         getMainMandalArt(tableId);
@@ -287,7 +289,7 @@ public class AddTableActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     savePrev(insertWhere, subWhere);
-                    resetDay(Integer.toString(finalI),1);
+                    resetDay(topicId.get(finalI),1);
 
                     subWhere=finalI;
                     changeView(finalI);
@@ -320,6 +322,13 @@ public class AddTableActivity extends AppCompatActivity {
             });
         }
 
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savePrev(insertWhere,subWhere);
+                finishAddTable();
+            }
+        });
     }
 
     void subInit(int now){
@@ -367,7 +376,7 @@ public class AddTableActivity extends AppCompatActivity {
     }
 
     void resetDay(String topicId, int i){
-        //i의 계획에 저장된 day 끌어오기
+        //topicId의 i번째 플랜 불러오기
 
         String topicSelect = "SELECT * FROM " + dbHelper.TABLE_SSUB + " WHERE " + dbHelper.TOPIC_ID + " = '"  + topicId + "';";
         Cursor topicCursor = sqLiteDatabase.rawQuery(topicSelect, null);
@@ -378,10 +387,10 @@ public class AddTableActivity extends AppCompatActivity {
             if (planCursor.moveToNext()) {
                 DAYS = planCursor.getInt(2);
                 for(int ii = 0; ii <= DAYCOUNT; ii++) {
-                    if ((DAYS & (1 << ii)) == 1) {
-                        montosun[ii].setPaintFlags(montosun[ii].getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    if ((DAYS & (1 << ii)) >= 1) {
+                        montosun[ii].setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
                     } else {
-                        montosun[ii].setPaintFlags(montosun[ii].getPaintFlags() & ~Paint.UNDERLINE_TEXT_FLAG);
+                        montosun[ii].setPaintFlags(0);
                     }
                 }
             }
@@ -419,10 +428,8 @@ public class AddTableActivity extends AppCompatActivity {
     }
 
     void changeBackView(){
-        savePrev(insertWhere, subWhere);
-
-        insertWhere = SSUB1;
         currentMode = MAIN_MODE;
+        insertWhere = SSUB1;
 
         getMandalArtView(0);
     }

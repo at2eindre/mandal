@@ -43,6 +43,7 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toAddTable();
+                getTableList();
             }
         });
     }
@@ -50,7 +51,7 @@ public class ListActivity extends AppCompatActivity {
     public void toAddTable(){
         Intent intent = new Intent(this, AddTableActivity.class);
         Log.i(LOG, "addTable");
-        startActivityForResult(intent, ADD_TABLE);
+        startActivity(intent);
 
     }
 
@@ -79,13 +80,4 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_TABLE) {
-            if (resultCode == RESULT_OK) {
-                getTableList();
-            }
-        }
-    }
 }
