@@ -41,7 +41,7 @@ public class AddTableActivity extends AppCompatActivity {
     LayoutInflater layoutInflater;
     View frameView;
     LinearLayout linearLayout;
-    EditText editText;
+    EditText editText, insertTitle;
     Button save;
     int DAYS=0;
 
@@ -233,6 +233,7 @@ public class AddTableActivity extends AppCompatActivity {
     }
 
     void mainInit(){
+        insertTitle = (EditText)findViewById(R.id.insert_title);
         sub[1] = (TextView)findViewById(R.id.add_sub1);
         sub[2] = (TextView)findViewById(R.id.add_sub2);
         sub[3] = (TextView)findViewById(R.id.add_sub3);
@@ -326,9 +327,16 @@ public class AddTableActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePrev(insertWhere,subWhere);
+                updateTitle();
                 finishAddTable();
             }
         });
+    }
+
+    void updateTitle(){
+        String updateMain = "UPDATE " + DBHelper.TABLE_MAIN + " SET " + DBHelper.TITLE+ " = '" + insertTitle.getText() + "'" +
+                " WHERE " + DBHelper.ID + " = '" + tableId + "'";
+        sqLiteDatabase.execSQL(updateMain);
     }
 
     void subInit(int now){
