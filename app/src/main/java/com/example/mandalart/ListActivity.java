@@ -28,6 +28,12 @@ public class ListActivity extends AppCompatActivity {
     ArrayList<String> tableId = new ArrayList<>();
 
     @Override
+    protected void onResume() {
+        getTableList();
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
