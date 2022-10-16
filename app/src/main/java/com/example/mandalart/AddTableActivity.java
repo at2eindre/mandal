@@ -263,6 +263,7 @@ public class AddTableActivity extends AppCompatActivity {
 
         editText=(EditText)findViewById(R.id.content);
         editText.setText(sub[1].getText());
+        editText.setSelection(editText.length());
 
         main_theme.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,6 +272,7 @@ public class AddTableActivity extends AppCompatActivity {
 
                 insertWhere=0;
                 editText.setText(main_theme.getText());
+                editText.setSelection(editText.length());
             }
         });
         for(int i = 1; i <= COUNT; i++) {
@@ -282,6 +284,7 @@ public class AddTableActivity extends AppCompatActivity {
                     subWhere = finalI;
                     insertWhere=finalI;
                     editText.setText(sub[finalI].getText());
+                    editText.setSelection(editText.length());
                 }
             });
         }
@@ -317,7 +320,7 @@ public class AddTableActivity extends AppCompatActivity {
                     if ((DAYS & (1 << finalI)) == 0) {
                         montosun[finalI].setPaintFlags(montosun[finalI].getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
                     } else {
-                        montosun[finalI].setPaintFlags(montosun[finalI].getPaintFlags()&~Paint.UNDERLINE_TEXT_FLAG);
+                        montosun[finalI].setPaintFlags(0);
                     }
                     DAYS = DAYS ^ (1 << finalI);
                 }
@@ -367,6 +370,7 @@ public class AddTableActivity extends AppCompatActivity {
 
         editText=(EditText)findViewById(R.id.content);
         editText.setText(ssub[1].getText());
+        editText.setSelection(editText.length());
 
         for(int i = 1; i <= COUNT; i++){
             int finalI = i;
@@ -378,6 +382,7 @@ public class AddTableActivity extends AppCompatActivity {
 
                     insertWhere = finalI;
                     editText.setText(ssub[finalI].getText());
+                    editText.setSelection(editText.length());
                 }
             });
         }
@@ -412,19 +417,22 @@ public class AddTableActivity extends AppCompatActivity {
             //insertWhere=0이면 MAIN_THEME에 저장하면 된다!
 
             if(insertWhere>0){
-                sub[insertWhere].setText(editText.getText());
+                String tmp= String.valueOf(editText.getText());
+                sub[insertWhere].setText(tmp);
                 topicsUpdate(insertWhere);
 
             }
             else {
-                main_theme.setText(editText.getText());
+                String tmp= String.valueOf(editText.getText());
+                main_theme.setText(tmp);
                 mainThemeUpdate();
             }
         }
         else if(currentMode == SUB_MODE){
             //SUB_MODE, insertWhere, editText.getText, 날짜입력처리해서 입력
 
-            ssub[insertWhere].setText(editText.getText());
+            String tmp= String.valueOf(editText.getText());
+            ssub[insertWhere].setText(tmp);
             plansUpdate(insertWhere, subWhere);
         }
     }
