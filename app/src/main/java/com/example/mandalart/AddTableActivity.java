@@ -302,13 +302,13 @@ public class AddTableActivity extends AppCompatActivity {
             });
         }
 
-        montosun[0] = (TextView)findViewById(R.id.mon);
-        montosun[1] = (TextView)findViewById(R.id.tue);
-        montosun[2] = (TextView)findViewById(R.id.wed);
-        montosun[3] = (TextView)findViewById(R.id.thu);
-        montosun[4] = (TextView)findViewById(R.id.fri);
-        montosun[5] = (TextView)findViewById(R.id.sat);
-        montosun[6] = (TextView)findViewById(R.id.sun);
+        montosun[0] = (TextView)findViewById(R.id.sun);
+        montosun[1] = (TextView)findViewById(R.id.mon);
+        montosun[2] = (TextView)findViewById(R.id.tue);
+        montosun[3] = (TextView)findViewById(R.id.wed);
+        montosun[4] = (TextView)findViewById(R.id.thu);
+        montosun[5] = (TextView)findViewById(R.id.fri);
+        montosun[6] = (TextView)findViewById(R.id.sat);
 
 
         for(int i = 0; i <= DAYCOUNT; i++){
