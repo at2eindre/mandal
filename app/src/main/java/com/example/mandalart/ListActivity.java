@@ -32,9 +32,6 @@ public class ListActivity extends AppCompatActivity {
     static ArrayList<String> tableId = new ArrayList<>();
 
     static RecyclerView recyclerView;
-    static ArrayList<String> topicId = new ArrayList<>();
-
-    static ArrayList<String>[] planId = new ArrayList[9];
     ListRecyclerViewAdapter listRecyclerViewAdapter;
 
     @Override
@@ -131,6 +128,13 @@ public class ListActivity extends AppCompatActivity {
     }
 
     static void deleteTable(String tableId){
+        ArrayList<String> topicId = new ArrayList<>();
+        ArrayList<String>[] planId = new ArrayList[9];
+
+        for(int i = 1; i<=COUNT; i++){
+            planId[i] = new ArrayList<String>();
+        }
+
         String mainSelect = "SELECT * FROM " + dbHelper.TABLE_SUB + " WHERE " + dbHelper.ID + " = '"  + tableId + "';";
         Cursor mainCursor = sqLiteDatabase.rawQuery(mainSelect, null);
         topicId.add(NULL);
@@ -139,40 +143,19 @@ public class ListActivity extends AppCompatActivity {
                 topicId.add(mainCursor.getString(i));
             }
         }
-        for(int i = 1 ; i<=COUNT;i++){
-            planId[i] = new ArrayList<String>();
+        for(int i = 1 ; i<= COUNT; i++){
             planId[i].add(NULL);
             String subSelect = "SELECT * FROM " + dbHelper.TABLE_SSUB + " WHERE " + dbHelper.TOPIC_ID + " = '"  + topicId.get(i) + "';";
+            Log.i(LOG, subSelect);
             Cursor subCursor = sqLiteDatabase.rawQuery(subSelect, null);
             if(subCursor.moveToNext()){
-                for(int j = 1; j<=COUNT ; j++){
+                for(int j = 1; j<= COUNT; j++){
                    planId[i].add(subCursor.getString(j));
                 }
             }
         }
-        String deleteMain = "DELETE FROM " + dbHelper.TABLE_MAIN + " WHERE " + dbHelper.ID +" = '" + tableId + "';";
-        sqLiteDatabase.execSQL(deleteMain);
-        deletePlans();
-        deleteTopics(tableId);
-    }
 
-    public static void deleteTopics(String tableId) {
-        String deleteSub = "DELETE FROM " + dbHelper.TABLE_SUB + " WHERE " + dbHelper.ID +" = '" + tableId + "';";
-        sqLiteDatabase.execSQL(deleteSub);
-
-        for(int i = 1; i <= COUNT; i++){
-            String deleteTopics = "DELETE FROM " + dbHelper.TABLE_TOPICS + " WHERE " + dbHelper.TOPIC_ID +
-                    " = '" + topicId.get(i) + "';";
-            sqLiteDatabase.execSQL(deleteTopics);
-        }
-    }
-
-    public static void deletePlans(){
-        for(int i = 1; i<= COUNT ; i++) {
-            String deleteSsub = "DELETE FROM " + dbHelper.TABLE_SSUB + " WHERE " + dbHelper.TOPIC_ID +
-                    " = '" + topicId.get(i) + "';";
-            sqLiteDatabase.execSQL(deleteSsub);
-        }
+        deleteMain(tableId);
 
         for(int i = 1; i <= COUNT; i++){
             for(int j = 1; j <= COUNT; j++) {
@@ -185,5 +168,31 @@ public class ListActivity extends AppCompatActivity {
             }
         }
 
+        deleteTopics(tableId, topicId);
     }
+
+    public static void deleteMain(String tableId){
+        String deleteMain = "DELETE FROM " + dbHelper.TABLE_MAIN + " WHERE " + dbHelper.ID +" = '" + tableId + "';";
+        sqLiteDatabase.execSQL(deleteMain);
+
+
+    }
+
+    public static void deleteTopics(String tableId, ArrayList topicId) {
+        String deleteSub = "DELETE FROM " + dbHelper.TABLE_SUB + " WHERE " + dbHelper.ID +" = '" + tableId + "';";
+        sqLiteDatabase.execSQL(deleteSub);
+
+        for(int i = 1; i <= COUNT; i++){
+            String deleteTopics = "DELETE FROM " + dbHelper.TABLE_TOPICS + " WHERE " + dbHelper.TOPIC_ID +
+                    " = '" + topicId.get(i) + "';";
+            sqLiteDatabase.execSQL(deleteTopics);
+        }
+
+        for(int i = 1; i<= COUNT ; i++) {
+            String deleteSsub = "DELETE FROM " + dbHelper.TABLE_SSUB + " WHERE " + dbHelper.TOPIC_ID +
+                    " = '" + topicId.get(i) + "';";
+            sqLiteDatabase.execSQL(deleteSsub);
+        }
+    }
+
 }
