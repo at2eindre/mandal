@@ -1,5 +1,7 @@
 package com.example.mandalart;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +27,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DayFragment extends Fragment {
-    static final String NULL = "null";
-
     public static final String LOG = "DayFragmentLog";
     CalendarView calendarView;
     static DBHelper dbHelper;
@@ -40,6 +40,10 @@ public class DayFragment extends Fragment {
     Calendar calendar;
     Button todoInsertButton;
     EditText todoEditText;
+
+    static RecyclerView recyclerView;
+
+    static DayTodoListRecyclerViewAdapter dayTodoListRecyclerViewAdapter;
 
     @Nullable
     @Override
@@ -152,10 +156,10 @@ public class DayFragment extends Fragment {
             todoList[1].add(daysCursor.getString(2));
         }
 
-        RecyclerView recyclerView = fragmentView.findViewById(R.id.todo_list_recycler);
+        recyclerView = fragmentView.findViewById(R.id.todo_list_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager((MainActivity)getActivity()));
 
-        DayTodoListRecyclerViewAdapter dayTodoListRecyclerViewAdapter = new DayTodoListRecyclerViewAdapter(todoList[1]);
+        dayTodoListRecyclerViewAdapter = new DayTodoListRecyclerViewAdapter(todoList[1], (MainActivity)getActivity());
         recyclerView.setAdapter(dayTodoListRecyclerViewAdapter);
     }
 
@@ -200,5 +204,40 @@ public class DayFragment extends Fragment {
         int dayOfWeekNumber = calendar.get(Calendar.DAY_OF_WEEK);
         return dayOfWeekNumber;
     }
+
+    public static void showDialog(int position, Activity activity) {
+        View dialogView = activity.getLayoutInflater().inflate(R.layout.delete_dialog, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setView(dialogView);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        TextView deleteTextView = dialogView.findViewById(R.id.delete_textView);
+        deleteTextView.setText(todoList[1].get(position) + "을/를\n 삭제하시겠습니까?");
+
+        Button deleteOk = dialogView.findViewById(R.id.delete_dialog_ok);
+        deleteOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(LOG, "ok");
+                deleteTodo(position);
+                todoList[0].remove(position);
+                todoList[1].remove(position);
+                recyclerView.getAdapter().notifyItemRemoved(position);
+                alertDialog.dismiss();
+            }
+        });
+
+        Button deleteCancel = dialogView.findViewById(R.id.delete_dialog_cancel);
+        deleteCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+    }
+
 
 }

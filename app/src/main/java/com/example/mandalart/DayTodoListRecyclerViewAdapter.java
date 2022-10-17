@@ -1,6 +1,8 @@
 package com.example.mandalart;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 
 public class DayTodoListRecyclerViewAdapter extends RecyclerView.Adapter<DayTodoListRecyclerViewAdapter.DayTodoListViewHolder> {
     ArrayList<String> todoList;
-
+    Activity activity;
     public class DayTodoListViewHolder extends RecyclerView.ViewHolder{
         TextView listTodoTitle;
         CheckBox checkBox;
@@ -42,17 +44,16 @@ public class DayTodoListRecyclerViewAdapter extends RecyclerView.Adapter<DayTodo
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION) {
-                        DayFragment.deleteTodo(position);
-                        todoList.remove(position);
-                        notifyItemRemoved(position);
+                       DayFragment.showDialog(position, activity);
                     }
                 }
             });
         }
     }
 
-    DayTodoListRecyclerViewAdapter(ArrayList<String> list){
+    DayTodoListRecyclerViewAdapter(ArrayList<String> list, Activity activity){
         todoList = list;
+        this.activity = activity;
     }
 
     @NonNull

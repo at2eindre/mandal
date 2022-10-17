@@ -1,12 +1,16 @@
 package com.example.mandalart;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,14 +22,20 @@ import java.util.ArrayList;
 public class ListActivity extends AppCompatActivity {
 
     static final String LOG = "ListActivityLog";
-    static final int ADD_TABLE = 3;
-
-    DBHelper dbHelper;
-    SQLiteDatabase sqLiteDatabase;
+    static final String NULL = "null";
+    static final int COUNT = 8;
+    static DBHelper dbHelper;
+    static SQLiteDatabase sqLiteDatabase;
     ImageView addTable;
 
-    ArrayList<String> tableList = new ArrayList<>();
-    ArrayList<String> tableId = new ArrayList<>();
+    static ArrayList<String> tableList = new ArrayList<>();
+    static ArrayList<String> tableId = new ArrayList<>();
+
+    static RecyclerView recyclerView;
+    static ArrayList<String> topicId = new ArrayList<>();
+
+    static ArrayList<String>[] planId = new ArrayList[9];
+    ListRecyclerViewAdapter listRecyclerViewAdapter;
 
     @Override
     protected void onResume() {
@@ -70,10 +80,10 @@ public class ListActivity extends AppCompatActivity {
             tableList.add(tableCursor.getString(1));
         }
 
-        RecyclerView recyclerView = findViewById(R.id.list_recycler);
+        recyclerView = findViewById(R.id.list_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ListRecyclerViewAdapter listRecyclerViewAdapter = new ListRecyclerViewAdapter(tableList);
+        listRecyclerViewAdapter = new ListRecyclerViewAdapter(tableList, this);
         recyclerView.setAdapter(listRecyclerViewAdapter);
 
         listRecyclerViewAdapter.setOnItemClickListener(new ListRecyclerViewAdapter.OnItemClickListener() {
@@ -86,5 +96,94 @@ public class ListActivity extends AppCompatActivity {
             }
         });
     }
+    public static void showDialog(int position, Activity activity) {
+        View dialogView = activity.getLayoutInflater().inflate(R.layout.delete_dialog, null);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setView(dialogView);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        TextView deleteTextView = dialogView.findViewById(R.id.delete_textView);
+        deleteTextView.setText(tableList.get(position) + "을/를\n 삭제하시겠습니까?");
+
+        Button deleteOk = dialogView.findViewById(R.id.delete_dialog_ok);
+        deleteOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(LOG, "ok");
+                deleteTable(tableId.get(position));
+                tableId.remove(position);
+                tableList.remove(position);
+                recyclerView.getAdapter().notifyItemRemoved(position);
+                alertDialog.dismiss();
+            }
+        });
+
+        Button deleteCancel = dialogView.findViewById(R.id.delete_dialog_cancel);
+        deleteCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    static void deleteTable(String tableId){
+        String mainSelect = "SELECT * FROM " + dbHelper.TABLE_SUB + " WHERE " + dbHelper.ID + " = '"  + tableId + "';";
+        Cursor mainCursor = sqLiteDatabase.rawQuery(mainSelect, null);
+        topicId.add(NULL);
+        if(mainCursor.moveToNext()){
+            for(int i = 1; i<=COUNT ; i++){
+                topicId.add(mainCursor.getString(i));
+            }
+        }
+        for(int i = 1 ; i<=COUNT;i++){
+            planId[i] = new ArrayList<String>();
+            planId[i].add(NULL);
+            String subSelect = "SELECT * FROM " + dbHelper.TABLE_SSUB + " WHERE " + dbHelper.TOPIC_ID + " = '"  + topicId.get(i) + "';";
+            Cursor subCursor = sqLiteDatabase.rawQuery(subSelect, null);
+            if(subCursor.moveToNext()){
+                for(int j = 1; j<=COUNT ; j++){
+                   planId[i].add(subCursor.getString(j));
+                }
+            }
+        }
+        String deleteMain = "DELETE FROM " + dbHelper.TABLE_MAIN + " WHERE " + dbHelper.ID +" = '" + tableId + "';";
+        sqLiteDatabase.execSQL(deleteMain);
+        deletePlans();
+        deleteTopics(tableId);
+    }
+
+    public static void deleteTopics(String tableId) {
+        String deleteSub = "DELETE FROM " + dbHelper.TABLE_SUB + " WHERE " + dbHelper.ID +" = '" + tableId + "';";
+        sqLiteDatabase.execSQL(deleteSub);
+
+        for(int i = 1; i <= COUNT; i++){
+            String deleteTopics = "DELETE FROM " + dbHelper.TABLE_TOPICS + " WHERE " + dbHelper.TOPIC_ID +
+                    " = '" + topicId.get(i) + "';";
+            sqLiteDatabase.execSQL(deleteTopics);
+        }
+    }
+
+    public static void deletePlans(){
+        for(int i = 1; i<= COUNT ; i++) {
+            String deleteSsub = "DELETE FROM " + dbHelper.TABLE_SSUB + " WHERE " + dbHelper.TOPIC_ID +
+                    " = '" + topicId.get(i) + "';";
+            sqLiteDatabase.execSQL(deleteSsub);
+        }
+
+        for(int i = 1; i <= COUNT; i++){
+            for(int j = 1; j <= COUNT; j++) {
+                String deletePlans = "DELETE FROM " + dbHelper.TABLE_PLANS + " WHERE " + dbHelper.PLAN_ID +
+                        " = '" + planId[i].get(j) + "';";
+                sqLiteDatabase.execSQL(deletePlans);
+
+                String deleteDays = "DELETE FROM " + dbHelper.TABLE_DAYS + " WHERE " + dbHelper.PLAN_ID +" = '" + planId[i].get(j) + "';";
+                sqLiteDatabase.execSQL(deleteDays);
+            }
+        }
+
+    }
 }
