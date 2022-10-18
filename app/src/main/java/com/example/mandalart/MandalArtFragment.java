@@ -163,6 +163,12 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         ssub[8] = (TextView) fragmentView.findViewById(R.id.ssub8);
 
         subTopicTextView = (TextView) fragmentView.findViewById(R.id.sub_topic);
+        subTopicTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     void mainToSub(){
