@@ -19,11 +19,13 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerVi
     Activity activity;
     public class ListViewHolder extends RecyclerView.ViewHolder{
         TextView listTableTitle;
+        ImageView change;
         ImageView delete;
         ListViewHolder(View itemView){
             super(itemView);
 
             listTableTitle = itemView.findViewById(R.id.list_table_title);
+            change = itemView.findViewById(R.id.change_list);
             delete = itemView.findViewById(R.id.delete_list);
             listTableTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -33,6 +35,17 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<ListRecyclerVi
                         if(onItemClickListener != null){
                             onItemClickListener.onItemClick(view, position);
                         }
+                    }
+                }
+            });
+            change.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        //보아라
+                        ///AddTableActivity연결해서
+                        //이거 테이블 아이디 붙여주고 싶은데!
                     }
                 }
             });

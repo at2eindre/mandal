@@ -20,6 +20,12 @@
             android:textSize="20sp"/>
 
         <ImageView
+            android:id="@+id/change_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/close"/>
+        <ImageView
             android:id="@+id/delete_list"
             android:layout_width="0dp"
             android:layout_height="match_parent"
