@@ -13,32 +13,31 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class WeekFragment extends Fragment {
+    public static final String LOG = "WeekFragmentLog";
 
-    Activity activity;
+
+    View fragmentView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.fragment_week, container, false);
-        Button button = v.findViewById(R.id.btn_fragment_week);
-        activity = (MainActivity)getActivity();
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialog();
-            }
-        });
-        return v;
+        fragmentView = inflater.inflate(R.layout.fragment_day, container, false);
+        init();
+        return fragmentView;
 
     }
-    public void showDialog() {
-        View dialogView = activity.getLayoutInflater().inflate(R.layout.add_calendar_dialog, null);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setView(dialogView);
+    ///구현하시오^__^///
 
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
 
+    public void init() {
+
+    }
+
+    public static boolean isChecked(int pos) {
+        return true;
+    }
+
+    public static void updateRoutine(int pos) {
+        
     }
 }
