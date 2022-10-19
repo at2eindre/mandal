@@ -77,6 +77,9 @@ public class WeekRecyclerViewAdapter extends RecyclerView.Adapter<WeekRecyclerVi
             if(isClick){
                 holder.checkBoxes[i].setChecked(WeekFragment.isChecked(position, i));
             }
+            else{
+                holder.checkBoxes[i].setVisibility(View.INVISIBLE);
+            }
 
         }
     }
