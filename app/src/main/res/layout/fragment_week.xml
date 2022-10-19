@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <CalendarView
-        android:id="@+id/calendar2"
+        android:id="@+id/week_calendar"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/week_recycler"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

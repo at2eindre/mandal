@@ -20,6 +20,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class MandalArtFragment extends Fragment implements OnBackPressedListener{
 
     static final String LOG = "MandalArtFragmentLog";
@@ -29,7 +34,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     String[] subTopicId = new String[9];
     TextView[] sub = new TextView[9];
     TextView[] ssub = new TextView[9];
-
+    SimpleDateFormat format;
     TextView subTopicTextView, mainTheme, mandalArtTitle, mandalArtTerm;
     ImageView tableList;
     FrameLayout frameLayout;
@@ -41,6 +46,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     static final int SUB_MODE = 1;
     static final int GET_TABLE_ID = 2;
 
+    static final long DAY_SECOND = 60 * 60 * 24 * 1000;
     int currentMode = MAIN_MODE;
 
     boolean changeTable = false;
@@ -74,6 +80,11 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         dbHelper = new DBHelper(mainActivity);
         sqLiteDatabase = dbHelper.getWritableDatabase();
         getMandalArtView();
+        try {
+            long a = getTerm();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 
@@ -84,8 +95,9 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         if(mainCursor.moveToNext()){
             title = mainCursor.getString(1);
             term = mainCursor.getString(2);
-            color = mainCursor.getString(3);
-            theme = mainCursor.getString(4);
+            term += " ~ ";
+            term += mainCursor.getString(3);
+            theme = mainCursor.getString(5);
         }
         mandalArtTitle.setText(title);
         mandalArtTerm.setText(term);
@@ -127,6 +139,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     }
 
     void mainInit(){
+        format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         sub[1] = (TextView) fragmentView.findViewById(R.id.sub1);
         sub[2] = (TextView) fragmentView.findViewById(R.id.sub2);
         sub[3] = (TextView) fragmentView.findViewById(R.id.sub3);
@@ -189,6 +202,20 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             subInit();
             getSubMandalArt(mainActivity.topicId);
         }
+    }
+
+    public long getTerm() throws ParseException {
+        String mainSelect = "SELECT * FROM " + dbHelper.TABLE_MAIN + " WHERE " + dbHelper.ID + " = '"  + id + "';";
+        Cursor mainCursor = sqLiteDatabase.rawQuery(mainSelect, null);
+        String termStart = "", termEnd = "";
+        if(mainCursor.moveToNext()){
+            termStart = mainCursor.getString(2);
+            termEnd = mainCursor.getString(3);
+        }
+        Date termStartDate = format.parse(termStart);
+        Date termEndDate = format.parse(termEnd);
+        long day = (termEndDate.getTime() - termStartDate.getTime()) / DAY_SECOND;
+        return day + 1;
     }
 
     @Override

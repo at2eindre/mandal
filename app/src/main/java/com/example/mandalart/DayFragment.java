@@ -40,7 +40,7 @@ public class DayFragment extends Fragment {
     Calendar calendar;
     Button todoInsertButton;
     EditText todoEditText;
-
+    SimpleDateFormat format;
     static RecyclerView recyclerView;
 
     static DayTodoListRecyclerViewAdapter dayTodoListRecyclerViewAdapter;
@@ -57,17 +57,16 @@ public class DayFragment extends Fragment {
         for(int i = 0; i < 2; i++){
             todoList[i] = new ArrayList<String>();
         }
-
+        format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         dbHelper = new DBHelper((MainActivity)getActivity());
         sqLiteDatabase = dbHelper.getWritableDatabase();
         calendar = Calendar.getInstance();
-        calendarView = (CalendarView) fragmentView.findViewById(R.id.calendar);
+        calendarView = (CalendarView) fragmentView.findViewById(R.id.day_calendar);
         todoEditText = (EditText) fragmentView.findViewById(R.id.todo_list);
         todoInsertButton = (Button) fragmentView.findViewById(R.id.todo_list_btn);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy년MM월dd일", Locale.getDefault());
                 Date date = new Date(year - 1900, month, dayOfMonth);
                 day = format.format(date);
                 dayOfWeek = getCurrentWeek(date);
@@ -86,7 +85,6 @@ public class DayFragment extends Fragment {
         });
 
         Date currentDate = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy년MM월dd일", Locale.getDefault());
         day = format.format(currentDate);
         getTodoList(getCurrentWeek(currentDate));
     }
@@ -135,8 +133,12 @@ public class DayFragment extends Fragment {
         for(int i = 0; i < 2; i++){
             todoList[i].clear();
         }
-        String todoListSelect = "SELECT * FROM " + DBHelper.TABLE_PLANS + " WHERE ( SELECT "
-                + DBHelper.PLAN_TERM + " & (1 << "+ Integer.toString(dayOfWeek - 1) + ")) >= 1";
+        String todoListSelect = "SELECT " + DBHelper.PLAN_ID + ", " + DBHelper.PLAN_NAME +
+                " FROM " + DBHelper.TABLE_PLANS + ", " + DBHelper.TABLE_TOPICS + "," + DBHelper.TABLE_MAIN +
+                " WHERE ( SELECT " + DBHelper.PLAN_TERM + " & (1 << "+ Integer.toString(dayOfWeek - 1) + ")) >= 1" +
+                " AND " + DBHelper.TERM_START + "<='" + day +"' AND "  + DBHelper.TERM_END + ">= '" + day + "'" +
+                " AND " + DBHelper.TABLE_MAIN + "." + DBHelper.ID + "=" + DBHelper.TABLE_TOPICS + "." + DBHelper.ID +
+                " AND " + DBHelper.TABLE_PLANS + "." + DBHelper.TOPIC_ID + "=" + DBHelper.TABLE_TOPICS + "." + DBHelper.TOPIC_ID;
         Cursor todoListCursor = sqLiteDatabase.rawQuery(todoListSelect, null);
         while(todoListCursor.moveToNext()){
             String planId = todoListCursor.getString(0);

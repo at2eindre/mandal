@@ -9,7 +9,7 @@
         android:id="@+id/title_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/insert_mandalart_table_term"
+        app:layout_constraintBottom_toTopOf="@id/term_linearlayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -32,16 +32,71 @@
             android:text="SAVE" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/insert_mandalart_table_term"
+    <LinearLayout
+        android:id="@+id/term_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="기간"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/insert_mandalart_table_framelayout"
+        app:layout_constraintBottom_toTopOf="@id/insert_mandalart_table_framelayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_linearlayout" />
+        app:layout_constraintTop_toBottomOf="@+id/title_linearlayout">
+
+        <TextView
+            android:id="@+id/insert_term"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="기간"
+            android:textSize="20sp"
+            android:layout_marginRight="5dp"
+            />
+
+        <TextView
+            android:id="@+id/insert_term_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="시작"
+            android:gravity="center"
+            android:textSize="20sp"
+            />
+
+        <ImageView
+            android:id="@+id/insert_term_start_button"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/calendar"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="~ "
+            android:gravity="center"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/insert_term_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="끝"
+            android:gravity="center"
+            android:textSize="20sp"
+            />
+
+        <ImageView
+            android:id="@+id/insert_term_end_button"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/calendar"/>
+
+
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/insert_mandalart_table_framelayout"
@@ -51,7 +106,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/insert_mandalart_table_term"
+        app:layout_constraintTop_toBottomOf="@id/term_linearlayout"
         app:layout_constraintBottom_toTopOf="@id/insert_mandalart_table_day">
 
     </FrameLayout>

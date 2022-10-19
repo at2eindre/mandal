@@ -19,7 +19,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String ID = "id";
     public static final String TITLE = "title";
-    public static final String TERM = "term";
+    public static final String TERM_START = "termStart";
+    public static final String TERM_END = "termEnd";
     public static final String COLOR = "color";
     public static final String THEME = "theme";
 
@@ -54,7 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     static final String MAIN_CREATE = "CREATE TABLE if not exists " +
             TABLE_MAIN + "(" + ID + " TEXT, " + TITLE + " TEXT, " +
-            TERM + " TEXT, " + COLOR + " TEXT, " + THEME + " TEXT);";
+            TERM_START + " TEXT, " + TERM_END + " TEXT, " + COLOR + " TEXT, " + THEME + " TEXT);";
 
     static final String SUB_CREATE = "CREATE TABLE if not exists " +
             TABLE_SUB + "(" + ID + " TEXT, " + TOPIC_ID_1 + " TEXT, " +
@@ -63,7 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
             TOPIC_ID_8 + " TEXT);";
 
     static final String TOPICS_CREATE = "CREATE TABLE if not exists " +
-            TABLE_TOPICS + "(" + TOPIC_ID + " TEXT, " + TOPIC + " TEXT);";
+            TABLE_TOPICS + "(" + TOPIC_ID + " TEXT, " + TOPIC + " TEXT, " + ID + " TEXT);";
 
     static final String SSUB_CRATE = "CREATE TABLE if not exists " +
             TABLE_SSUB + "(" + TOPIC_ID + " TEXT, " +
@@ -73,7 +74,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     static final String PLANS_CREATE = "CREATE TABLE if not exists " +
             TABLE_PLANS +"(" + PLAN_ID + " TEXT, " + PLAN_NAME + " TEXT, " +
-            PLAN_TERM + " INTEGER, " + COMPLETE + " INTEGER);";
+            PLAN_TERM + " INTEGER, " + COMPLETE + " INTEGER, " + TOPIC_ID + " TEXT);";
 
     static final String DAYS_CREATE = "CREATE TABLE if not exists " +
             TABLE_DAYS +"(" + DATE + " TEXT, " + PLAN_ID + " TEXT, " + PLAN_NAME + " TEXT, " +

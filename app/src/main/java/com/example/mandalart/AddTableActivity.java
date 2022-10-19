@@ -1,27 +1,32 @@
 package com.example.mandalart;
 
-import android.content.ContentValues;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddTableActivity extends AppCompatActivity {
 
@@ -37,7 +42,8 @@ public class AddTableActivity extends AppCompatActivity {
 
     TextView[] montosun=new TextView[8];
 
-    TextView sub_topic, main_theme;
+    ImageView termStartCalendar, termEndCalendar;
+    TextView sub_topic, main_theme, termStart, termEnd;
     FrameLayout frameLayout;
     LayoutInflater layoutInflater;
     View frameView;
@@ -45,11 +51,12 @@ public class AddTableActivity extends AppCompatActivity {
     EditText editText, insertTitle;
     Button save;
     int DAYS=0;
+    String selectDate;
 
     ArrayList<String> topicId = new ArrayList<>();
 
     ArrayList<String>[] planId = new ArrayList[9];
-
+    SimpleDateFormat format;
     static final int MAIN_MODE = 0;
     static final int SUB_MODE = 1;
     static final int SSUB1 = 1;
@@ -62,6 +69,8 @@ public class AddTableActivity extends AppCompatActivity {
     static final int SSUB8 = 8;
     static final int COUNT = 8;
     static final int DAYCOUNT = 6;
+    final int START = 0;
+    final int END = 1;
     static final String NULL = "null";
 
     int currentMode = MAIN_MODE;
@@ -169,8 +178,10 @@ public class AddTableActivity extends AppCompatActivity {
 
     public void insertTableId(String id){
         String insertTableId = "INSERT INTO " + DBHelper.TABLE_MAIN + "(" + DBHelper.ID + ", " +
-                DBHelper.TITLE + ", " + DBHelper.TERM + ", " + DBHelper.COLOR + ", " +
-                DBHelper.THEME + ") VALUES (" + id + ", " + NULL + ", " + NULL +", " + NULL +", " + NULL +")";
+                DBHelper.TITLE + ", " + DBHelper.TERM_START + ", " +DBHelper.TERM_END + ", " +
+                DBHelper.COLOR + ", " + DBHelper.THEME + ") VALUES ('" + id + "', " + NULL + ", " +
+                NULL +", " + NULL +", " + NULL +", " + NULL +")";
+        Log.i(LOG, insertTableId);
         sqLiteDatabase.execSQL(insertTableId);
     }
 
@@ -186,7 +197,7 @@ public class AddTableActivity extends AppCompatActivity {
 
         for(int i = 1; i <= COUNT; i++){
             String insertTopics = "INSERT INTO " + DBHelper.TABLE_TOPICS + "(" + DBHelper.TOPIC_ID + ", " +
-                   DBHelper.TOPIC + ") VALUES (" + topicId.get(i) + ", " + NULL + ")";
+                   DBHelper.TOPIC + ", " + DBHelper.ID + ") VALUES (" + topicId.get(i) + ", " + NULL + ", " + tableId + ")";
             sqLiteDatabase.execSQL(insertTopics);
         }
     }
@@ -207,8 +218,8 @@ public class AddTableActivity extends AppCompatActivity {
         for(int i = 1; i <= COUNT; i++){
             for(int j = 1; j <= COUNT; j++) {
                 String insertPlans = "INSERT INTO " + DBHelper.TABLE_PLANS + "(" + DBHelper.PLAN_ID + ", " +
-                        DBHelper.PLAN_NAME + ", " + DBHelper.PLAN_TERM + ", " + DBHelper.COMPLETE + ") VALUES (" + planId[i].get(j) +
-                        ", " + NULL +  ", " + NULL + ", " + NULL + ")";
+                        DBHelper.PLAN_NAME + ", " + DBHelper.PLAN_TERM + ", " + DBHelper.COMPLETE + ", " + DBHelper.TOPIC_ID
+                        + ") VALUES (" + planId[i].get(j) + ", " + NULL +  ", " + NULL + ", " + NULL + ", " + topicId.get(i) + ")";
                 sqLiteDatabase.execSQL(insertPlans);
             }
         }
@@ -234,6 +245,11 @@ public class AddTableActivity extends AppCompatActivity {
     }
 
     void mainInit(){
+        format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        termStart = (TextView)findViewById(R.id.insert_term_start);
+        termEnd = (TextView)findViewById(R.id.insert_term_end);
+        termStartCalendar = (ImageView)findViewById(R.id.insert_term_start_button);
+        termEndCalendar = (ImageView)findViewById(R.id.insert_term_end_button);
         insertTitle = (EditText)findViewById(R.id.insert_title);
         sub[1] = (TextView)findViewById(R.id.add_sub1);
         sub[2] = (TextView)findViewById(R.id.add_sub2);
@@ -273,6 +289,19 @@ public class AddTableActivity extends AppCompatActivity {
                 insertWhere=0;
                 editText.setText(main_theme.getText());
                 editText.setSelection(editText.length());
+            }
+        });
+
+        termStartCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCalendarDialog(START);
+            }
+        });
+        termEndCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCalendarDialog(END);
             }
         });
         for(int i = 1; i <= COUNT; i++) {
@@ -330,15 +359,44 @@ public class AddTableActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                savePrev(insertWhere,subWhere);
-                updateTitle();
-                finishAddTable();
+                try {
+                    if(termChecked()){
+                        savePrev(insertWhere,subWhere);
+                        updateMain();
+                        finishAddTable();
+
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    void updateTitle(){
+    boolean termChecked() throws ParseException {
+        if(termStart.getText().equals("시작")){
+            Toast.makeText(this.getApplicationContext(), "기간 입력이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(termEnd.getText().equals("끝")){
+            Toast.makeText(this.getApplicationContext(), "기간 입력이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        Date termStartDate = format.parse(termStart.getText().toString());
+        Date termEndDate = format.parse(termEnd.getText().toString());
+        long diff = termEndDate.getTime() - termStartDate.getTime();
+        if(diff >= 0) return true;
+        else {
+            Toast.makeText(this.getApplicationContext(), "기간 입력이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    void updateMain(){
         String updateMain = "UPDATE " + DBHelper.TABLE_MAIN + " SET " + DBHelper.TITLE+ " = '" + insertTitle.getText() + "'" +
+                " , " + DBHelper.TERM_START+ " = '" + termStart.getText() + "'" +
+                " , " + DBHelper.TERM_END+ " = '" + termEnd.getText() + "'" +
                 " WHERE " + DBHelper.ID + " = '" + tableId + "'";
         sqLiteDatabase.execSQL(updateMain);
     }
@@ -551,6 +609,50 @@ public class AddTableActivity extends AppCompatActivity {
                 sqLiteDatabase.execSQL(deletePlans);
             }
         }
+    }
+
+    public void showCalendarDialog(int termWhere) {
+        View dialogView = getLayoutInflater().inflate(R.layout.add_calendar_dialog, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        Date currentDate = new Date();
+
+        selectDate = format.format(currentDate);
+        CalendarView calendarView = (CalendarView)dialogView.findViewById(R.id.dialog_calendar);
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+                Date date = new Date(year - 1900, month, dayOfMonth);
+                selectDate = format.format(date);
+            }
+        });
+        Button deleteOk = dialogView.findViewById(R.id.add_calendar_ok);
+        deleteOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(termWhere == START){
+                    termStart.setText(selectDate);
+                }
+                else if(termWhere == END){
+                    termEnd.setText(selectDate);
+                }
+                alertDialog.dismiss();
+            }
+        });
+
+        Button deleteCancel = dialogView.findViewById(R.id.add_calendar_cancel);
+        deleteCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
     }
 
     @Override
