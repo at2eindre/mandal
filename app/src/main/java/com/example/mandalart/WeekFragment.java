@@ -1,7 +1,5 @@
 package com.example.mandalart;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -9,13 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,18 +23,20 @@ import java.util.Locale;
 
 public class WeekFragment extends Fragment {
     public static final String LOG = "WeekFragmentLog";
-    DBHelper dbHelper;
-    SQLiteDatabase sqLiteDatabase;
-
+    static DBHelper dbHelper;
+    static SQLiteDatabase sqLiteDatabase;
+    static RecyclerView recyclerView;
     SimpleDateFormat format;
     Calendar calendar;
     CalendarView calendarView;
-    View fragmentView;
-    String day;
+    static View fragmentView;
     int dayOfWeek;
     static final int WEEK = 7;
     static final long DAY_SECOND = 60 * 60 * 24 * 1000;
-    ArrayList<String>[] todoList = new ArrayList[2]; // 0 : id, 1 : name
+    static String weekDay[] = new String[8];
+    static ArrayList<String>[] todoList = new ArrayList[2]; // 0 : id, 1 : name
+    static WeekRecyclerViewAdapter weekRecyclerViewAdapter;
+
 
     @Nullable
     @Override
@@ -73,25 +73,50 @@ public class WeekFragment extends Fragment {
                 for(int i = 1; i<= WEEK ;i++){
                     Date tmpDate = new Date(date.getTime() + (i - dayOfWeek) * DAY_SECOND);
                     int tmpDayOfWeek = getCurrentWeek(tmpDate);
-                    day = format.format(tmpDate);
-                    getTodoList(tmpDayOfWeek);
+                    weekDay[i] = format.format(tmpDate);
+                    getTodoList(tmpDayOfWeek, weekDay[i]);
                 }
-                int cnt = todoList[1].size();
-                for(int i = 0;i<cnt;i++){
-                    Log.i(LOG, todoList[1].get(i));
-                }
+                getRoutine();
             }
         });
 
+        getThisWeek();
 
     }
+
+    public void getThisWeek(){
+        Date date = new Date();
+
+        dayOfWeek = getCurrentWeek(date);
+        for(int i = 0; i < 2; i++){
+            todoList[i].clear();
+        }
+        for(int i = 1; i<= WEEK ;i++){
+            Date tmpDate = new Date(date.getTime() + (i - dayOfWeek) * DAY_SECOND);
+            int tmpDayOfWeek = getCurrentWeek(tmpDate);
+            weekDay[i] = format.format(tmpDate);
+            getTodoList(tmpDayOfWeek, weekDay[i]);
+        }
+
+        getRoutine();
+    }
+
+    public void getRoutine(){
+        recyclerView = fragmentView.findViewById(R.id.week_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager((MainActivity)getActivity()));
+
+        weekRecyclerViewAdapter = new WeekRecyclerViewAdapter(todoList[1], (MainActivity)getActivity());
+        recyclerView.setAdapter(weekRecyclerViewAdapter);
+
+    }
+
     public int getCurrentWeek(Date date) {
         calendar.setTime(date);
         int dayOfWeekNumber = calendar.get(Calendar.DAY_OF_WEEK);
         return dayOfWeekNumber;
     }
 
-    public void getTodoList(int dayOfWeek){
+    public void getTodoList(int dayOfWeek, String day){
         String todoListSelect = "SELECT " + DBHelper.PLAN_ID + ", " + DBHelper.PLAN_NAME +
                 " FROM " + DBHelper.TABLE_PLANS + ", " + DBHelper.TABLE_TOPICS + "," + DBHelper.TABLE_MAIN +
                 " WHERE ( SELECT " + DBHelper.PLAN_TERM + " & (1 << "+ Integer.toString(dayOfWeek - 1) + ")) >= 1" +
@@ -106,7 +131,7 @@ public class WeekFragment extends Fragment {
                     planId  +"' AND " + DBHelper.DATE + " = '" + day +"'";
             Cursor daysCursor = sqLiteDatabase.rawQuery(daysSelect, null);
             if(!daysCursor.moveToNext()){
-                insertPlanTodo(planId, planName);
+                insertPlanTodo(planId, planName, day);
             }
         }
 
@@ -122,18 +147,46 @@ public class WeekFragment extends Fragment {
 
     }
 
-    public void insertPlanTodo(String planId, String planName){
+    public void insertPlanTodo(String planId, String planName, String day){
         String insertPlans = "INSERT INTO " + DBHelper.TABLE_DAYS + "(" + DBHelper.DATE + ", " +
                 DBHelper.PLAN_ID + ", " + DBHelper.PLAN_NAME + ", " + DBHelper.CHECK + ") VALUES ('" + day +
                 "', '" + planId +  "', '" + planName + "', " + Integer.toString(0) +")";
         sqLiteDatabase.execSQL(insertPlans);
     }
 
-    public static boolean isChecked(int pos) {
-        return true;
+    public static boolean isChecked(int pos, int dayOfWeek) {
+        String daysSelect = "SELECT * FROM " + DBHelper.TABLE_DAYS + " WHERE " + DBHelper.DATE + " = '" + weekDay[dayOfWeek] +"' AND " +
+                DBHelper.PLAN_ID + "= '" + todoList[0].get(pos) +"'";
+        Cursor daysCursor = sqLiteDatabase.rawQuery(daysSelect, null);
+        if(daysCursor.moveToNext()){
+            int check = daysCursor.getInt(3);
+            if(check == 1) return true;
+            else return false;
+        }
+        return false;
     }
 
-    public static void updateRoutine(int pos) {
-        
+    public static void updateRoutine(int pos, int dayOfWeek) {
+        String daysSelect = "SELECT * FROM " + DBHelper.TABLE_DAYS + " WHERE " + DBHelper.DATE + " = '" + weekDay[dayOfWeek] +"' AND " +
+                DBHelper.PLAN_ID + "= '" + todoList[0].get(pos) +"'";
+        Cursor daysCursor = sqLiteDatabase.rawQuery(daysSelect, null);
+        int chk = 0;
+        if(daysCursor.moveToNext()){
+            chk = daysCursor.getInt(3);
+        }
+        if(chk == 0) chk = 1;
+        else chk = 0;
+        String updatePlans = "UPDATE " + DBHelper.TABLE_DAYS + " SET " + DBHelper.CHECK+ " = " + chk +
+                " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "' AND " + DBHelper.DATE + "='" + weekDay[dayOfWeek] +"'";
+        sqLiteDatabase.execSQL(updatePlans);
+
+    }
+
+    public static boolean isClicked(int pos, int dayOfWeek){
+        String daysSelect = "SELECT * FROM " + DBHelper.TABLE_DAYS + " WHERE " + DBHelper.DATE + " = '" + weekDay[dayOfWeek] +"' AND " +
+                DBHelper.PLAN_ID + "= '" + todoList[0].get(pos) +"'";
+        Cursor daysCursor = sqLiteDatabase.rawQuery(daysSelect, null);
+        if(daysCursor.moveToNext()) return true;
+        return false;
     }
 }
