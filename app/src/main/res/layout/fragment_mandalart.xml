@@ -17,6 +17,7 @@
             android:layout_weight="6"
             android:id="@+id/mandalart_table_title"
             android:layout_width="0dp"
+            android:layout_marginLeft="12dp"
             android:layout_height="wrap_content"
             android:text="테이블 이름"
             android:textSize="20sp"/>
@@ -36,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text="기간"
         android:textSize="20sp"
+        android:layout_marginLeft="12dp"
         app:layout_constraintBottom_toTopOf="@+id/mandalart_table_framelayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
