@@ -406,9 +406,6 @@ public class AddTableActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         settingColor= (String) colorTextView.getText();
-                        //보아라
-                        //여기서 저장!
-
                         color.setBackgroundColor(Color.parseColor(settingColor));
                         alertDialog.dismiss();
                     }
