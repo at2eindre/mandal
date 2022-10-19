@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
