@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,8 +18,15 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.skydoves.colorpickerview.ColorEnvelope;
+import com.skydoves.colorpickerview.ColorPickerView;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +51,8 @@ public class AddTableActivity extends AppCompatActivity {
     View frameView;
     LinearLayout linearLayout;
     EditText editText, insertTitle;
-    Button save;
+    Button color,save;
+    String settingColor="#0000FF";
     int DAYS=0;
 
     ArrayList<String> topicId = new ArrayList<>();
@@ -253,6 +262,7 @@ public class AddTableActivity extends AppCompatActivity {
         button_sub[8] = (Button)findViewById(R.id.button_add_sub8);
 
         main_theme = (TextView)findViewById(R.id.add_main_theme);
+        color=(Button)findViewById(R.id.color_button);
         save=(Button)findViewById(R.id.save_button);
 
         //여기서 sub1~8이랑 main_theme 불러오기 필요
@@ -327,11 +337,64 @@ public class AddTableActivity extends AppCompatActivity {
             });
         }
 
+        color.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View dialogView=View.inflate(AddTableActivity.this,R.layout.color_dialog,null);
+                AlertDialog.Builder dlg= new AlertDialog.Builder(AddTableActivity.this);
+                dlg.setView(dialogView);
+
+                final AlertDialog alertDialog = dlg.create();
+                alertDialog.show();
+
+                TextView colorTextView=dialogView.findViewById(R.id.color_text_view);
+                View colorView=dialogView.findViewById(R.id.color_view);
+
+                //보아라
+                colorTextView.setText("지금거 데이터 끌어오슈!");
+//                colorView.setBackgroundColor(Integer.parseInt((String) colorTextView.getText()));
+                colorView.setBackgroundColor(Color.parseColor("#0000FFFF"));
+                //////
+
+                ColorPickerView colorPickerView = dialogView.findViewById(R.id.colorPickerView);
+                colorPickerView.setColorListener(new ColorEnvelopeListener() {
+                    @Override
+                    public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
+                        colorTextView.setText("#"+envelope.getHexCode());
+                        colorView.setBackgroundColor(envelope.getColor());
+                    }
+                });
+
+                Button colorCancel = dialogView.findViewById(R.id.color_dialog_cancel);
+                colorCancel.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        alertDialog.dismiss();
+                    }
+                });
+
+                Button colorOK = dialogView.findViewById(R.id.color_dialog_ok);
+                colorOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        settingColor= (String) colorTextView.getText();
+                        //보아라
+                        //여기서 저장!
+
+                        color.setBackgroundColor(Color.parseColor(settingColor));
+                        alertDialog.dismiss();
+                    }
+                });
+
+            }
+        });
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 savePrev(insertWhere,subWhere);
                 updateTitle();
+                updateColor();
                 finishAddTable();
             }
         });
@@ -339,6 +402,11 @@ public class AddTableActivity extends AppCompatActivity {
 
     void updateTitle(){
         String updateMain = "UPDATE " + DBHelper.TABLE_MAIN + " SET " + DBHelper.TITLE+ " = '" + insertTitle.getText() + "'" +
+                " WHERE " + DBHelper.ID + " = '" + tableId + "'";
+        sqLiteDatabase.execSQL(updateMain);
+    }
+    void updateColor(){
+        String updateMain = "UPDATE " + DBHelper.TABLE_MAIN + " SET " + DBHelper.COLOR+ " = '" + settingColor + "'" +
                 " WHERE " + DBHelper.ID + " = '" + tableId + "'";
         sqLiteDatabase.execSQL(updateMain);
     }

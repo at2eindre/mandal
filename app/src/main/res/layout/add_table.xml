@@ -22,14 +22,22 @@
             android:hint="만다라트 이름을 입력하세요."
             android:textSize="20sp"
             />
-
         <Button
-            android:id="@+id/save_button"
-            android:layout_width="wrap_content"
+            android:id="@+id/color_button"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="SAVE" />
+            android:text="색"/>
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="저장" />
     </LinearLayout>
 
     <TextView
