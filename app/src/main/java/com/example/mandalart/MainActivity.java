@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     MandalArtFragment mandalArtFragment;
     DayFragment dayFragment;
     WeekFragment weekFragment;
-    SettingFragment settingFragment;
     FragmentTransaction fragmentTransaction;
     OnBackPressedListener onBackPressedListener;
 
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         mandalArtFragment = new MandalArtFragment();
         dayFragment = new DayFragment();
         weekFragment = new WeekFragment();
-        settingFragment = new SettingFragment();
 
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frame, mandalArtFragment).commitAllowingStateLoss();
@@ -59,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_fragment_week:
                 fragmentTransaction.replace(R.id.main_frame, weekFragment).commitAllowingStateLoss();
-                break;
-            case R.id.btn_fragment_setting:
-                fragmentTransaction.replace(R.id.main_frame, settingFragment).commitAllowingStateLoss();
                 break;
             default:
         }

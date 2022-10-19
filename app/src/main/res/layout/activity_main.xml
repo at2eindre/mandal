@@ -47,13 +47,6 @@
             android:onClick="clickHandler"
             android:text="week" />
 
-        <Button
-            android:id="@+id/btn_fragment_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="clickHandler"
-            android:text="설정" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
