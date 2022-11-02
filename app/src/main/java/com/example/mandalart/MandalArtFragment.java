@@ -58,6 +58,8 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     static final int SUB_MODE = 1;
     static final int GET_TABLE_ID = 2;
     static final int WEEK = 7;
+    static final int COUNT = 8;
+
     static final long DAY_SECOND = 60 * 60 * 24 * 1000;
     int currentMode = MAIN_MODE;
 
@@ -103,22 +105,15 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     }
 
     void getPlanComplete(){
-        String topicsSelect = "SELECT * FROM " + dbHelper.TABLE_TOPICS + " WHERE " + dbHelper.ID + " = '"  + id + "';";
-        Cursor topicsCursor = sqLiteDatabase.rawQuery(topicsSelect, null);
-        String topicId = "";
-        int topicIdx = 0;
-        while(topicsCursor.moveToNext()){
-            topicIdx++;
-            topicId = topicsCursor.getString(0);
-            String plansSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " + dbHelper.TOPIC_ID + " = '"  + topicId + "';";
+        for(int i = 1; i<=COUNT ;i++){
+            String plansSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " + dbHelper.TOPIC_ID + " = '"  + subTopicId[i] + "';";
             Cursor plansCursor = sqLiteDatabase.rawQuery(plansSelect, null);
             int planIdx = 0;
             while(plansCursor.moveToNext()){
                 planIdx++;
-                planComplete[topicIdx][planIdx] = plansCursor.getInt(3);
+                planComplete[i][planIdx] = plansCursor.getInt(3);
             }
         }
-
     }
 
     void getMainMandalArt(String id){
