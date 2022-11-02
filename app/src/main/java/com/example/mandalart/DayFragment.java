@@ -124,9 +124,25 @@ public class DayFragment extends Fragment {
         }
         if(chk == 0) chk = 1;
         else chk = 0;
-        String updatePlans = "UPDATE " + DBHelper.TABLE_DAYS + " SET " + DBHelper.CHECK+ " = " + chk +
+        String updateDays = "UPDATE " + DBHelper.TABLE_DAYS + " SET " + DBHelper.CHECK+ " = " + chk +
                 " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "' AND " + DBHelper.DATE + "='" + day +"'";
-        sqLiteDatabase.execSQL(updatePlans);
+        sqLiteDatabase.execSQL(updateDays);
+        char first = todoList[0].get(pos).charAt(0);
+        if(first != 'p'){
+            int newComplete = 0;
+            String plansSelect = "SELECT * FROM " + DBHelper.TABLE_PLANS + " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "'";
+            Cursor plansCursor = sqLiteDatabase.rawQuery(plansSelect, null);
+            if(plansCursor.moveToNext()){
+                newComplete = daysCursor.getInt(3);
+            }
+            if(chk == 0) newComplete--;
+            else newComplete++;
+
+            String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.COMPLETE+ " = " + newComplete +
+                    " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos)+"'";
+            sqLiteDatabase.execSQL(updatePlans);
+
+        }
     }
 
     public void getTodoList(int dayOfWeek){

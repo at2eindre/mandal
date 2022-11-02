@@ -247,7 +247,7 @@ public class AddTableActivity extends AppCompatActivity {
 
     public void plansUpdate(int insertWhere, int subWhere){
         String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.PLAN_NAME+ " = '" + ssub[insertWhere].getText() + "', " +
-                DBHelper.PLAN_TERM + " = '" + DAYS  + "'," + DBHelper.COMPLETE + " = " + DAYS +
+                DBHelper.PLAN_TERM + " = '" + DAYS  + "'," + DBHelper.COMPLETE + " = 0" +
                 " WHERE " + DBHelper.PLAN_ID + " = '" + planId[subWhere].get(insertWhere) + "'";
         sqLiteDatabase.execSQL(updatePlans);
     }

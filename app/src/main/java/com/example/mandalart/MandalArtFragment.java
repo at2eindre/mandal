@@ -22,6 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -34,25 +36,34 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     String[] subTopicId = new String[9];
     TextView[] sub = new TextView[9];
     TextView[] ssub = new TextView[9];
+    //기간 동안 일(1)~토(7) 개수
+    int[] weekCount = new int[8];
+    /*
+    소주제1에 계획1이면 [1][1]에 몇개 했는지 들어가 있음!
+    planComplete / weekCount -> 이렇게 해서 색칠하면 될듯!
+    */
+    int[][] planComplete = new int[9][9];
+
     SimpleDateFormat format;
     TextView subTopicTextView, mainTheme, mandalArtTitle, mandalArtTerm;
     ImageView tableList;
     FrameLayout frameLayout;
     LayoutInflater layoutInflater;
     View frameView, fragmentView;
+    String title = "", term = "", color = "", theme = "";
+    String termStart = "", termEnd = "";
 
     static final int RESULT_OK = -1;
     static final int MAIN_MODE = 0;
     static final int SUB_MODE = 1;
     static final int GET_TABLE_ID = 2;
-
+    static final int WEEK = 7;
     static final long DAY_SECOND = 60 * 60 * 24 * 1000;
     int currentMode = MAIN_MODE;
 
     boolean changeTable = false;
 
     MainActivity mainActivity;
-
     DBHelper dbHelper;
     SQLiteDatabase sqLiteDatabase;
 
@@ -65,6 +76,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         fragmentView = view;
         mainActivity = (MainActivity)getActivity();
         id = mainActivity.tableId;
+        format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         layoutInflater = (LayoutInflater)((MainActivity)getActivity()).getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         frameLayout = view.findViewById(R.id.mandalart_table_framelayout);
         mandalArtTitle = view.findViewById(R.id.mandalart_table_title);
@@ -85,24 +97,46 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        setWeekCount();
+        getPlanComplete();
         return view;
+    }
+
+    void getPlanComplete(){
+        String topicsSelect = "SELECT * FROM " + dbHelper.TABLE_TOPICS + " WHERE " + dbHelper.ID + " = '"  + id + "';";
+        Cursor topicsCursor = sqLiteDatabase.rawQuery(topicsSelect, null);
+        String topicId = "";
+        int topicIdx = 0;
+        while(topicsCursor.moveToNext()){
+            topicIdx++;
+            topicId = topicsCursor.getString(0);
+            String plansSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " + dbHelper.TOPIC_ID + " = '"  + topicId + "';";
+            Cursor plansCursor = sqLiteDatabase.rawQuery(plansSelect, null);
+            int planIdx = 0;
+            while(plansCursor.moveToNext()){
+                planIdx++;
+                planComplete[topicIdx][planIdx] = plansCursor.getInt(3);
+            }
+        }
+
     }
 
     void getMainMandalArt(String id){
         String mainSelect = "SELECT * FROM " + dbHelper.TABLE_MAIN + " WHERE " + dbHelper.ID + " = '"  + id + "';";
         Cursor mainCursor = sqLiteDatabase.rawQuery(mainSelect, null);
-        String title = "", term = "", color = "", theme = "";
         if(mainCursor.moveToNext()){
+            termStart = mainCursor.getString(2);
+            termEnd = mainCursor.getString(3);
             title = mainCursor.getString(1);
             term = mainCursor.getString(2);
             term += " ~ ";
             term += mainCursor.getString(3);
+            color = mainCursor.getString(4);
             theme = mainCursor.getString(5);
         }
         mandalArtTitle.setText(title);
         mandalArtTerm.setText(term);
         mainTheme.setText(theme);
-
         String subSelect = "SELECT * FROM " + dbHelper.TABLE_SUB + " WHERE " + dbHelper.ID + " = '"  + id + "';";
         Cursor subCursor = sqLiteDatabase.rawQuery(subSelect, null);
         if(subCursor.moveToNext()){
@@ -118,6 +152,9 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     }
 
     void getSubMandalArt(String topicId){
+        mandalArtTitle.setText(title);
+        mandalArtTerm.setText(term);
+        mainTheme.setText(theme);
         String subTopicSelect = "SELECT * FROM " + dbHelper.TABLE_TOPICS + " WHERE " + dbHelper.TOPIC_ID + " = '" + topicId + "';";
         Cursor subTopicCursor = sqLiteDatabase.rawQuery(subTopicSelect, null);
         if (subTopicCursor.moveToNext()) {
@@ -133,13 +170,13 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
                 Cursor planCursor = sqLiteDatabase.rawQuery(planSelect, null);
                 if (planCursor.moveToNext()) {
                     ssub[i].setText(planCursor.getString(1));
+
                 }
             }
         }
     }
 
     void mainInit(){
-        format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
         sub[1] = (TextView) fragmentView.findViewById(R.id.sub1);
         sub[2] = (TextView) fragmentView.findViewById(R.id.sub2);
         sub[3] = (TextView) fragmentView.findViewById(R.id.sub3);
@@ -204,18 +241,37 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         }
     }
 
-    public long getTerm() throws ParseException {
-        String mainSelect = "SELECT * FROM " + dbHelper.TABLE_MAIN + " WHERE " + dbHelper.ID + " = '"  + id + "';";
-        Cursor mainCursor = sqLiteDatabase.rawQuery(mainSelect, null);
-        String termStart = "", termEnd = "";
-        if(mainCursor.moveToNext()){
-            termStart = mainCursor.getString(2);
-            termEnd = mainCursor.getString(3);
+    void setWeekCount(){
+        try {
+            int firstDay = getFirstDayOfWeek();
+            int termDay = getTerm();
+            int remainder = termDay % WEEK;
+            for(int i=0;i<WEEK;i++){
+                int currentDay = firstDay + i;
+                currentDay %=7;
+                if(currentDay == 0) currentDay =7;
+                if(i < remainder) weekCount[currentDay] = termDay / WEEK + 1;
+                else weekCount[currentDay] = termDay / WEEK;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+
+    }
+
+    public int getTerm() throws ParseException {
         Date termStartDate = format.parse(termStart);
         Date termEndDate = format.parse(termEnd);
         long day = (termEndDate.getTime() - termStartDate.getTime()) / DAY_SECOND;
-        return day + 1;
+        return (int)day + 1;
+    }
+
+    public int getFirstDayOfWeek() throws ParseException{
+        Date date = format.parse(termStart);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int dayOfWeekNumber = calendar.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeekNumber;
     }
 
     @Override
