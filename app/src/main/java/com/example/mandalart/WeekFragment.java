@@ -176,10 +176,26 @@ public class WeekFragment extends Fragment {
         }
         if(chk == 0) chk = 1;
         else chk = 0;
-        String updatePlans = "UPDATE " + DBHelper.TABLE_DAYS + " SET " + DBHelper.CHECK+ " = " + chk +
+        String updateDays = "UPDATE " + DBHelper.TABLE_DAYS + " SET " + DBHelper.CHECK+ " = " + chk +
                 " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "' AND " + DBHelper.DATE + "='" + weekDay[dayOfWeek] +"'";
-        sqLiteDatabase.execSQL(updatePlans);
+        sqLiteDatabase.execSQL(updateDays);
 
+        char first = todoList[0].get(pos).charAt(0);
+        if(first != 'p'){
+            int newComplete = 0;
+            String plansSelect = "SELECT COUNT(*) FROM " + DBHelper.TABLE_DAYS + " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "' AND " +
+                    DBHelper.CHECK +"= 1";
+            Cursor plansCursor = sqLiteDatabase.rawQuery(plansSelect, null);
+            Log.i(LOG, plansSelect);
+            if(plansCursor.moveToNext()){
+                newComplete = plansCursor.getInt(0);
+            }
+
+            String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.COMPLETE+ " = " + newComplete +
+                    " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos)+"'";
+            sqLiteDatabase.execSQL(updatePlans);
+
+        }
     }
 
     public static boolean isClicked(int pos, int dayOfWeek){
