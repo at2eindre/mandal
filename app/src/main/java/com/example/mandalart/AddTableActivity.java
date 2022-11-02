@@ -548,9 +548,11 @@ public class AddTableActivity extends AppCompatActivity {
                 DAYS = planCursor.getInt(2);
                 for(int ii = 0; ii <= DAYCOUNT; ii++) {
                     if ((DAYS & (1 << ii)) >= 1) {
-                        montosun[ii].setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+//                        montosun[ii].setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                        montosun[ii].setBackground(getResources().getDrawable(R.drawable.circle));
                     } else {
-                        montosun[ii].setPaintFlags(0);
+//                        montosun[ii].setPaintFlags(0);
+                        montosun[ii].setBackground(null);
                     }
                 }
             }
