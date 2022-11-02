@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,7 +132,6 @@ public class DayFragment extends Fragment {
             String plansSelect = "SELECT COUNT(*) FROM " + DBHelper.TABLE_DAYS + " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "' AND " +
                     DBHelper.CHECK +"= 1";
             Cursor plansCursor = sqLiteDatabase.rawQuery(plansSelect, null);
-            Log.i(LOG, plansSelect);
             if(plansCursor.moveToNext()){
                 newComplete = plansCursor.getInt(0);
             }
@@ -239,7 +237,6 @@ public class DayFragment extends Fragment {
         deleteOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(LOG, "ok");
                 deleteTodo(position);
                 todoList[0].remove(position);
                 todoList[1].remove(position);
