@@ -1,11 +1,15 @@
 package com.example.mandalart;
 
+import static com.example.mandalart.AddTableActivity.DAYCOUNT;
+import static java.lang.Math.floor;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +46,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     소주제1에 계획1이면 [1][1]에 몇개 했는지 들어가 있음!
     planComplete / weekCount -> 이렇게 해서 색칠하면 될듯!
     */
-    int[][] planComplete = new int[9][9];
+    int[][][] planComplete = new int[9][9][2];
 
     SimpleDateFormat format;
     TextView subTopicTextView, mainTheme, mandalArtTitle, mandalArtTerm;
@@ -52,6 +56,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     View frameView, fragmentView;
     String title = "", term = "", color = "", theme = "";
     String termStart = "", termEnd = "";
+    int colorR=0,colorG=0,colorB=255;
 
     static final int RESULT_OK = -1;
     static final int MAIN_MODE = 0;
@@ -93,7 +98,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         });
         dbHelper = new DBHelper(mainActivity);
         sqLiteDatabase = dbHelper.getWritableDatabase();
-        getMandalArtView();
+        getMandalArtView(0);
         try {
             long a = getTerm();
         } catch (ParseException e) {
@@ -111,7 +116,21 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             int planIdx = 0;
             while(plansCursor.moveToNext()){
                 planIdx++;
-                planComplete[i][planIdx] = plansCursor.getInt(3);
+                planComplete[i][planIdx][0] = plansCursor.getInt(3);
+                planComplete[i][planIdx][1] = plansCursor.getInt(2);
+
+                int days=planComplete[i][planIdx][1];
+
+                if(days==0)planComplete[i][planIdx][1]=-1;
+                else {
+                    planComplete[i][planIdx][1]=0;
+
+                    for(int ii = 0; ii <= DAYCOUNT; ii++) {
+                        if ((days & (1 << ii)) >= 1) {
+                            planComplete[i][planIdx][1]+=weekCount[ii+1];
+                        }
+                    }
+                }
             }
         }
     }
@@ -127,6 +146,9 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             term += " ~ ";
             term += mainCursor.getString(3);
             color = mainCursor.getString(4);
+            colorR=Integer.decode("0x"+color.substring(3,5));
+            colorG=Integer.decode("0x"+color.substring(5,7));
+            colorB=Integer.decode("0x"+color.substring(7,9));
             theme = mainCursor.getString(5);
         }
         mandalArtTitle.setText(title);
@@ -183,12 +205,12 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
 
         mainTheme = (TextView)fragmentView.findViewById(R.id.main_theme);
 
-        for(int i = 1; i < 9; i++){
+        for(int i = 1; i <= COUNT; i++){
             int finalI = i;
             sub[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mainToSub();
+                    mainToSub(finalI);
                     getSubMandalArt(subTopicId[finalI]);
                     mainActivity.topicId = subTopicId[finalI];
                 }
@@ -197,7 +219,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         getMainMandalArt(id);
     }
 
-    void subInit(){
+    void subInit(int where){
         ssub[1] = (TextView) fragmentView.findViewById(R.id.ssub1);
         ssub[2] = (TextView) fragmentView.findViewById(R.id.ssub2);
         ssub[3] = (TextView) fragmentView.findViewById(R.id.ssub3);
@@ -214,14 +236,44 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
                 onBackPressed();
             }
         });
+
+
+        getPlanComplete();
+        for(int i = 1; i <= COUNT; i++){
+            int finalI = i;
+            int daydo=planComplete[where][finalI][0];
+            int dayall=planComplete[where][finalI][1];
+            if(dayall>0){
+                ssub[finalI].setBackgroundColor(Color.rgb((int)floor(colorR+(255-colorR) * (1.0-(double)daydo/dayall)),(int)floor(colorG+(255-colorG) * (1.0-(double)daydo/dayall)),(int)floor(colorB+(255-colorB) * (1.0-(double)daydo/dayall))));
+            }
+
+            ssub[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int daydo=planComplete[where][finalI][0];
+                    int dayall=planComplete[where][finalI][1];
+                    if(dayall==-1){
+                        if(daydo==1){
+                            planComplete[where][finalI][0]=0;
+                            ssub[finalI].setBackgroundColor(Color.rgb(255,255,255));
+                        }
+                        else{
+                            planComplete[where][finalI][0]=1;
+                            ssub[finalI].setBackgroundColor(Color.rgb(colorR,colorG,colorB));
+                        }
+                    }
+
+                }
+            });
+        }
     }
 
-    void mainToSub(){
+    void mainToSub(int where){
         currentMode = SUB_MODE;
-        getMandalArtView();
+        getMandalArtView(where);
     }
 
-    void getMandalArtView(){
+    void getMandalArtView(int where){
         if(frameLayout.getChildCount() > 0) frameLayout.removeViewAt(0);
         if(currentMode == MAIN_MODE){
             frameView = layoutInflater.inflate(R.layout.main_table, frameLayout, false);
@@ -231,7 +283,14 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         else if(currentMode == SUB_MODE){
             frameView = layoutInflater.inflate(R.layout.sub_table, frameLayout, false);
             frameLayout.addView(frameView);
-            subInit();
+            if(where==0){
+            for(int i=1;i<=8;i++){
+                if(subTopicId[i].equals(mainActivity.topicId)){
+                    subInit(i);
+                }
+            }}
+
+            else subInit(where);
             getSubMandalArt(mainActivity.topicId);
         }
     }
@@ -274,7 +333,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         switch (currentMode){
             case SUB_MODE:
                 currentMode = MAIN_MODE;
-                getMandalArtView();
+                getMandalArtView(0);
                 break;
             case MAIN_MODE:
                 if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
@@ -309,7 +368,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
                 mainActivity.tableId = id;
                 changeTable = true;
                 currentMode = MAIN_MODE;
-                getMandalArtView();
+                getMandalArtView(0);
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("table", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();

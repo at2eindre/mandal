@@ -57,7 +57,7 @@ public class AddTableActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     EditText editText, insertTitle;
     Button color,save;
-    String settingColor="#0000FF";
+    String settingColor="#FF0000FF";
     int DAYS=0;
     String selectDate;
 
@@ -379,9 +379,9 @@ public class AddTableActivity extends AppCompatActivity {
                 View colorView=dialogView.findViewById(R.id.color_view);
 
                 //보아라
-                colorTextView.setText("지금거 데이터 끌어오슈!");
+                colorTextView.setText("#FF0000FF");
 //                colorView.setBackgroundColor(Integer.parseInt((String) colorTextView.getText()));
-                colorView.setBackgroundColor(Color.parseColor("#0000FFFF"));
+                colorView.setBackgroundColor(Color.parseColor("#FF0000FF"));
                 //////
 
                 ColorPickerView colorPickerView = dialogView.findViewById(R.id.colorPickerView);
