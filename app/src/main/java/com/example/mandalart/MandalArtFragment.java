@@ -55,7 +55,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     planComplete / weekCount -> 이렇게 해서 색칠하면 될듯!
     */
     int[][][] planComplete = new int[9][9][2];
-
+    String[][] subPlanId = new String[9][9];
     SimpleDateFormat format;
     TextView subTopicTextView, mainTheme, mandalArtTitle, mandalArtTerm;
     ImageView tableList;
@@ -122,7 +122,20 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
                 download();
             }
         });
+        getSubPlanId();
         return view;
+    }
+
+    void getSubPlanId(){
+       for(int i = 1;i<=COUNT;i++){
+            String planSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " +dbHelper.TOPIC_ID +"='" + subTopicId[i]+ "';";
+            Cursor planCursor = sqLiteDatabase.rawQuery(planSelect, null);
+            int planIdx = 0;
+            while (planCursor.moveToNext()) {
+                planIdx++;
+                subPlanId[i][planIdx] = planCursor.getString(0);
+            }
+        }
     }
 
     Bitmap getSubBitmap(int idx){
