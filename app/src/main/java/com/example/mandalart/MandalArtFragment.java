@@ -148,6 +148,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             if(mainCursor.moveToNext()) {
                 subTopicTextView.setText(mainCursor.getString(5));
                 subTopicTextView.setBackgroundColor(Color.rgb(255, 255, 255));
+                subTopicTextView.setBackground(getResources().getDrawable(R.drawable.rect));
             }
             String topicSelect2 = "SELECT * FROM " + dbHelper.TABLE_TOPICS + " WHERE " +dbHelper.ID +"='" + id+ "';";
             Cursor topicCursor2 = sqLiteDatabase.rawQuery(topicSelect2, null);
@@ -156,6 +157,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             while (topicCursor2.moveToNext()) {
                 ssub[++ii].setText(topicCursor2.getString(1));
                 ssub[ii].setBackgroundColor(Color.rgb(255, 255, 255));
+                ssub[ii].setBackground(getResources().getDrawable(R.drawable.rect));
             }
             tmp = getBitmapFromLayout(layout);
         }
@@ -165,6 +167,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             if(topicCursor.moveToNext()) {
                 subTopicTextView.setText(topicCursor.getString(1));
                 subTopicTextView.setBackgroundColor(Color.rgb(255, 255, 255));
+                subTopicTextView.setBackground(getResources().getDrawable(R.drawable.rect));
             }
             String planSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " +dbHelper.TOPIC_ID +"='" + subTopicId[idx] + "';";
             Cursor planCursor = sqLiteDatabase.rawQuery(planSelect, null);
@@ -173,6 +176,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             while (planCursor.moveToNext()) {
                 ssub[++i].setText(planCursor.getString(1));
                 ssub[i].setBackgroundColor(Color.rgb(255, 255, 255));
+                ssub[i].setBackground(getResources().getDrawable(R.drawable.rect));
             }
             tmp = getBitmapFromLayout(layout);
         }
@@ -180,6 +184,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         Cursor topicCursor = sqLiteDatabase.rawQuery(topicSelect, null);
         if(topicCursor.moveToNext()) {
             subTopicTextView.setText(topicCursor.getString(1));
+            subTopicTextView.setBackground(null);
             subTopicTextView.setBackgroundColor(Color.rgb((int)floor(255-(255-colorR) * colorTopic[subWhere]),(int)floor(255-(255-colorG) * colorTopic[subWhere]),(int)floor(255-(255-colorB) * colorTopic[subWhere])));
         }
         String planSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " +dbHelper.TOPIC_ID +"='" + mainActivity.topicId + "';";
@@ -191,15 +196,19 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             int daydo=planComplete[subWhere][i][0];
             int dayall=planComplete[subWhere][i][1];
             if(dayall>0){
+                ssub[i].setBackground(null);
                 ssub[i].setBackgroundColor(Color.rgb((int)floor(255-(255-colorR) * (double)daydo/dayall),(int)floor(255-(255-colorG) * (double)daydo/dayall),(int)floor(255-(255-colorB) * (double)daydo/dayall)));
+
             }
             if(dayall==-1){
+                ssub[i].setBackground(null);
                 if(daydo==0){
                     ssub[i].setBackgroundColor(Color.rgb(255,255,255));
                 }
                 else{
                     ssub[i].setBackgroundColor(Color.rgb(colorR,colorG,colorB));
                 }
+
             }
         }
 
@@ -213,7 +222,9 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             mainTheme.setBackgroundColor(Color.rgb(255, 255, 255));
             for(int i = 1;i<9;i++){
                 sub[i].setBackgroundColor(Color.rgb(255, 255, 255));
+                sub[i].setBackground(getResources().getDrawable(R.drawable.rect));
             }
+            mainTheme.setBackground(getResources().getDrawable(R.drawable.rect));
             tmp = getBitmapFromLayout(layout);
         }
         else{
@@ -222,6 +233,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             if(topicCursor.moveToNext()) {
                 mainTheme.setText(topicCursor.getString(1));
                 mainTheme.setBackgroundColor(Color.rgb(255, 255, 255));
+                mainTheme.setBackground(getResources().getDrawable(R.drawable.rect));
             }
             String planSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " +dbHelper.TOPIC_ID +"='" + subTopicId[idx] + "';";
             Cursor planCursor = sqLiteDatabase.rawQuery(planSelect, null);
@@ -230,6 +242,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             while (planCursor.moveToNext()) {
                 sub[++i].setText(planCursor.getString(1));
                 sub[i].setBackgroundColor(Color.rgb(255, 255, 255));
+                sub[i].setBackground(getResources().getDrawable(R.drawable.rect));
             }
             tmp = getBitmapFromLayout(layout);
 
@@ -238,6 +251,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         Cursor mainCursor = sqLiteDatabase.rawQuery(mainSelect, null);
         if(mainCursor.moveToNext()) {
             mainTheme.setText(mainCursor.getString(5));
+            mainTheme.setBackground(null);
             mainTheme.setBackgroundColor(Color.rgb((int)floor(255-(255-colorR) * colorTopic[0]),(int)floor(255-(255-colorG) * colorTopic[0]),(int)floor(255-(255-colorB) * colorTopic[0])));
 
         }
@@ -247,6 +261,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         int ii = 0;
         while (topicCursor2.moveToNext()) {
             sub[++ii].setText(topicCursor2.getString(1));
+            sub[ii].setBackground(null);
             sub[ii].setBackgroundColor(Color.rgb((int) floor(255 - (255 - colorR) * colorTopic[ii]), (int) floor(255 - (255 - colorG) * colorTopic[ii]), (int) floor(255 - (255 - colorB) * colorTopic[ii])));
         }
         return tmp;
