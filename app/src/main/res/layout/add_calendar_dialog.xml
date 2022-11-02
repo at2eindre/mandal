@@ -29,13 +29,31 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="취소"/>
+            android:text="취소"
+            android:backgroundTint="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:textColor="@color/textColor"
+            android:textStyle="bold"
+            app:cornerRadius="0dp"
+            app:iconPadding="0dp"
+            app:rippleColor="@color/white"
+            />
         <Button
             android:id="@+id/add_calendar_ok"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="확인"/>
+            android:text="확인"
+            android:backgroundTint="@color/white"
+            app:cornerRadius="0dp"
+            app:iconPadding="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
+            app:rippleColor="@color/white"
+            />
     </LinearLayout>
 
 

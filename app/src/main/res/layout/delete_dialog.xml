@@ -2,7 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:backgroundTint="@color/white"
+    android:foregroundTint="@color/white"
+    android:padding="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,12 +16,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/delete_textView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <LinearLayout
             android:id="@+id/delete_dialog_layout"
@@ -31,13 +36,32 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="취소"/>
+                android:text="취소"
+                android:backgroundTint="@color/white"
+                app:cornerRadius="0dp"
+                app:iconPadding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:textStyle="bold"
+                android:textColor="@color/textColor"
+                app:rippleColor="@color/white"
+                />
+
             <Button
                 android:id="@+id/delete_dialog_ok"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="확인"/>
+                android:text="확인"
+                android:backgroundTint="@color/white"
+                app:cornerRadius="0dp"
+                app:iconPadding="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:textStyle="bold"
+                android:textColor="@color/textColor"
+                app:rippleColor="@color/white"
+                />
         </LinearLayout>
 
     </LinearLayout>

@@ -61,6 +61,9 @@ public class AddTableActivity extends AppCompatActivity {
     int DAYS=0;
     String selectDate;
 
+    int flag = 1;
+    int fflag = 1;
+
     ArrayList<String> topicId = new ArrayList<>();
 
     ArrayList<String>[] planId = new ArrayList[9];
@@ -298,6 +301,11 @@ public class AddTableActivity extends AppCompatActivity {
                 insertWhere=0;
                 editText.setText(main_theme.getText());
                 editText.setSelection(editText.length());
+                if(flag>0){
+                    sub[flag].setBackground(null);
+                }
+                main_theme.setBackground(getResources().getDrawable(R.drawable.rect));
+                flag=0;
             }
         });
 
@@ -323,6 +331,14 @@ public class AddTableActivity extends AppCompatActivity {
                     insertWhere=finalI;
                     editText.setText(sub[finalI].getText());
                     editText.setSelection(editText.length());
+                    if(flag>0){
+                        sub[flag].setBackground(null);
+                    }
+                    else if (flag==0){
+                        main_theme.setBackground(null);
+                    }
+                    flag=finalI;
+                    sub[finalI].setBackground(getResources().getDrawable(R.drawable.rect));
                 }
             });
         }
@@ -333,6 +349,7 @@ public class AddTableActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     savePrev(insertWhere, subWhere);
                     resetDay(topicId.get(finalI),1);
+                    flag=1;
 
                     subWhere=finalI;
                     changeView(finalI);
@@ -356,9 +373,11 @@ public class AddTableActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     //색깔 확인
                     if ((DAYS & (1 << finalI)) == 0) {
-                        montosun[finalI].setPaintFlags(montosun[finalI].getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
+                        //montosun[finalI].setPaintFlags(montosun[finalI].getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
+                        montosun[finalI].setBackground(getResources().getDrawable(R.drawable.circle));
                     } else {
-                        montosun[finalI].setPaintFlags(0);
+                        //montosun[finalI].setPaintFlags(0);
+                        montosun[finalI].setBackground(null);
                     }
                     DAYS = DAYS ^ (1 << finalI);
                 }
@@ -483,6 +502,7 @@ public class AddTableActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePrev(insertWhere, subWhere);
+                fflag=1;
 
                 changeBackView();
             }
@@ -505,6 +525,10 @@ public class AddTableActivity extends AppCompatActivity {
                     insertWhere = finalI;
                     editText.setText(ssub[finalI].getText());
                     editText.setSelection(editText.length());
+                    ssub[fflag].setBackground(null);
+
+                    fflag=finalI;
+                    ssub[finalI].setBackground(getResources().getDrawable(R.drawable.rect));
                 }
             });
         }

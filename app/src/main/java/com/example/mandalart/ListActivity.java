@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
@@ -26,7 +28,7 @@ public class ListActivity extends AppCompatActivity {
     static final int COUNT = 8;
     static DBHelper dbHelper;
     static SQLiteDatabase sqLiteDatabase;
-    ImageView addTable;
+    FloatingActionButton addTable;
 
     static ArrayList<String> tableList = new ArrayList<>();
     static ArrayList<String> tableId = new ArrayList<>();
@@ -48,7 +50,7 @@ public class ListActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
-        addTable = (ImageView)findViewById(R.id.add_table);
+        addTable = (FloatingActionButton) findViewById(R.id.add_table);
 
         getTableList();
 

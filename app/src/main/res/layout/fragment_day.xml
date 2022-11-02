@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <CalendarView
         android:id="@+id/day_calendar"
@@ -16,7 +17,8 @@
         android:id="@+id/todo_list_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="horizontal">
 
         <EditText
@@ -24,6 +26,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
+            android:textColor="@color/textColor"
+            android:layout_marginRight="5dp"
             android:hint="todo list"/>
         <Button
             android:id="@+id/todo_list_btn"
@@ -36,8 +40,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/todo_list_recycler"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/fullrect2"
+        android:padding="15dp"
         android:scrollbars="vertical" />
 
 

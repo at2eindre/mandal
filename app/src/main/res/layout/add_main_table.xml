@@ -23,7 +23,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <TextView
                     android:id="@+id/add_sub1"
@@ -34,13 +35,18 @@
                     android:text="1번"
                     android:hint="소주제를\n입력하세요"
                     android:clickable="true"
+                    android:background="@drawable/rect"
                     />
+
                 <Button
                     android:id="@+id/button_add_sub1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:text="다음"/>
+                    android:text="다음"
+                    android:textColorLink="#FFFBDA" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -63,6 +69,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:text="다음"/>
             </LinearLayout>
 
@@ -82,12 +90,16 @@
                     android:hint="소주제를\n입력하세요"
                     android:clickable="true"
                     />
+
                 <Button
                     android:id="@+id/button_add_sub3"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:text="다음"/>
+                    android:text="다음"
+                    android:textColorLink="#FBF7DC" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -117,6 +129,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:text="다음"/>
             </LinearLayout>
             <TextView
@@ -149,6 +163,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:text="다음"/>
             </LinearLayout>
         </LinearLayout>
@@ -180,6 +196,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:text="다음"/>
             </LinearLayout>
             <LinearLayout
@@ -203,6 +221,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:text="다음"/>
             </LinearLayout>
 
@@ -227,6 +247,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:text="다음"/>
             </LinearLayout>
         </LinearLayout>
