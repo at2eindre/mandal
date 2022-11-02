@@ -47,13 +47,13 @@
             android:layout_weight="1"
             android:src="@drawable/list"
             />
-
-        <Button
-            android:id="@+id/download"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+                <ImageView
+                    android:id="@+id/download"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/save"
+                    />
     </LinearLayout>
 
             <TextView
