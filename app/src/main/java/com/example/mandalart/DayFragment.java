@@ -132,11 +132,15 @@ public class DayFragment extends Fragment {
             int newComplete = 0;
             String plansSelect = "SELECT * FROM " + DBHelper.TABLE_PLANS + " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "'";
             Cursor plansCursor = sqLiteDatabase.rawQuery(plansSelect, null);
+            Log.i(LOG, plansSelect);
             if(plansCursor.moveToNext()){
-                newComplete = daysCursor.getInt(3);
+                newComplete = plansCursor.getInt(3);
+                Log.i(LOG, "newComplete" + newComplete);
             }
+            Log.i(LOG, "newComplete" + newComplete);
             if(chk == 0) newComplete--;
             else newComplete++;
+            Log.i(LOG, "newComplete" + newComplete);
 
             String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.COMPLETE+ " = " + newComplete +
                     " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos)+"'";
