@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <CalendarView
         android:id="@+id/week_calendar"
@@ -21,22 +22,29 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
         android:paddingLeft="8dp"
         android:paddingRight="4dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         >
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="4"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
             android:text="routine"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
             android:text="일"
             android:gravity="center"/>
         <TextView
@@ -44,6 +52,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
             android:text="월"
             android:gravity="center"/>
         <TextView
@@ -51,6 +61,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
             android:text="화"
             android:gravity="center"/>
         <TextView
@@ -58,6 +70,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
             android:text="수"
             android:gravity="center"/>
         <TextView
@@ -65,6 +79,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
             android:text="목"
             android:gravity="center"/>
         <TextView
@@ -72,6 +88,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
             android:text="금"
             android:gravity="center"/>
         <TextView
@@ -79,6 +97,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
             android:text="토"
             android:gravity="center"/>
     </LinearLayout>
@@ -87,7 +107,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/week_recycler"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/fullrect2"
+        android:padding="15dp"
+        />
 </LinearLayout>

@@ -14,10 +14,20 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"></FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textColor"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout"
+        />
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:clipToPadding="false"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -29,23 +39,47 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="clickHandler"
-            android:text="만다라트" />
+            android:text="만다라트"
+            android:backgroundTint="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:textColor="@color/yellow"
+            android:textStyle="bold"
+            app:cornerRadius="0dp"
+            app:iconPadding="0dp"
+            app:rippleColor="@color/white" />
 
         <Button
             android:id="@+id/btn_fragment_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:onClick="clickHandler"
-            android:text="day" />
+            android:text="day"
+            android:textColor="@color/textColor"
+            android:textStyle="bold"
+            app:cornerRadius="0dp"
+            app:iconPadding="0dp"
+            app:rippleColor="@color/white" />
 
         <Button
             android:id="@+id/btn_fragment_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:onClick="clickHandler"
-            android:text="week" />
+            android:text="week"
+            android:textColor="@color/textColor"
+            android:textStyle="bold"
+            app:cornerRadius="0dp"
+            app:iconPadding="0dp"
+            app:rippleColor="@color/white" />
 
     </LinearLayout>
 

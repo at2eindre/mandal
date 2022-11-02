@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     public String tableId = null;
     public String topicId = null;
+
+    int flag = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +53,36 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (view.getId()){
             case R.id.btn_fragment_mandalart:
+                if(flag==2){
+                    ((Button)findViewById(R.id.btn_fragment_day)).setTextColor(getResources().getColor(R.color.textColor));
+                }
+                else if(flag==3){
+                    ((Button)findViewById(R.id.btn_fragment_week)).setTextColor(getResources().getColor(R.color.textColor));
+                }
+                ((Button)findViewById(R.id.btn_fragment_mandalart)).setTextColor(getResources().getColor(R.color.yellow));
+                flag=1;
                 fragmentTransaction.replace(R.id.main_frame, mandalArtFragment).commitAllowingStateLoss();
                 break;
             case R.id.btn_fragment_day:
+                if(flag==1){
+                    ((Button)findViewById(R.id.btn_fragment_mandalart)).setTextColor(getResources().getColor(R.color.textColor));
+                }
+                else if(flag==3){
+                    ((Button)findViewById(R.id.btn_fragment_week)).setTextColor(getResources().getColor(R.color.textColor));
+                }
+                ((Button)findViewById(R.id.btn_fragment_day)).setTextColor(getResources().getColor(R.color.yellow));
+                flag=2;
                 fragmentTransaction.replace(R.id.main_frame, dayFragment).commitAllowingStateLoss();
                 break;
             case R.id.btn_fragment_week:
+                if(flag==1){
+                    ((Button)findViewById(R.id.btn_fragment_mandalart)).setTextColor(getResources().getColor(R.color.textColor));
+                }
+                else if(flag==2){
+                    ((Button)findViewById(R.id.btn_fragment_day)).setTextColor(getResources().getColor(R.color.textColor));
+                }
+                ((Button)findViewById(R.id.btn_fragment_week)).setTextColor(getResources().getColor(R.color.yellow));
+                flag=3;
                 fragmentTransaction.replace(R.id.main_frame, weekFragment).commitAllowingStateLoss();
                 break;
             default:

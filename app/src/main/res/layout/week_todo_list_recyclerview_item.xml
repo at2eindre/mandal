@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
+        android:id="@+id/week_linear"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal"
@@ -20,51 +21,66 @@
             android:id="@+id/week_todo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="4"
+            android:textColor="@color/textColor"
             android:textSize="20sp"/>
 
         <CheckBox
             android:id="@+id/week_sun"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/textColor"
             android:layout_weight="1"/>
 
         <CheckBox
             android:id="@+id/week_mon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/textColor"
             android:layout_weight="1"/>
 
         <CheckBox
             android:id="@+id/week_tue"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/textColor"
             android:layout_weight="1"/>
 
         <CheckBox
             android:id="@+id/week_wed"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/textColor"
             android:layout_weight="1"/>
 
         <CheckBox
             android:id="@+id/week_thu"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/textColor"
             android:layout_weight="1"/>
 
         <CheckBox
             android:id="@+id/week_fri"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/textColor"
             android:layout_weight="1"/>
 
         <CheckBox
             android:id="@+id/week_sat"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/textColor"
             android:layout_weight="1"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textColor"
+        app:layout_constraintTop_toBottomOf="@id/week_linear"
+        android:layout_marginTop="5dp"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
