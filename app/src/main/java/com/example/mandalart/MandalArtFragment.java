@@ -416,7 +416,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
             int daydo=planComplete[where][finalI][0];
             int dayall=planComplete[where][finalI][1];
             if(dayall>0){
-                ssub[finalI].setBackgroundColor(Color.rgb((int)floor(colorR+(255-colorR) * (1.0-(double)daydo/dayall)),(int)floor(colorG+(255-colorG) * (1.0-(double)daydo/dayall)),(int)floor(colorB+(255-colorB) * (1.0-(double)daydo/dayall))));
+                ssub[finalI].setBackgroundColor(Color.rgb((int)floor(colorR+(255-colorR) * (double)daydo/dayall),(int)floor(colorG+(255-colorG) * (double)daydo/dayall),(int)floor(colorB+(255-colorB) * (double)daydo/dayall)));
             }
 
             ssub[i].setOnClickListener(new View.OnClickListener() {
@@ -427,6 +427,11 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
                     if(dayall==-1){
                         if(daydo==1){
                             planComplete[where][finalI][0]=0;
+
+//                            String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.COMPLETE+ " = " + 0 +
+//                                    " WHERE " + DBHelper.PLAN_ID + " = '" + subPlanId[where][finalI]+"'";
+//                            sqLiteDatabase.execSQL(updatePlans);
+
                             ssub[finalI].setBackgroundColor(Color.rgb(255,255,255));
                         }
                         else{
