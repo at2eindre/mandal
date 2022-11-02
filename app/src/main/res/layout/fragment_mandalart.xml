@@ -38,23 +38,21 @@
                     android:textSize="30sp"
                     android:textStyle="bold"
                     android:textColor="@color/textColor"
-                    android:layout_marginRight="10dp"
                     />
 
         <ImageView
             android:id="@+id/table_list"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="27dp"
+            android:layout_weight="1"
             android:src="@drawable/list"
-            android:layout_marginRight="10dp"
             />
 
-        <ImageView
+        <Button
             android:id="@+id/download"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="12dp"
-            android:background="@drawable/save"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             />
     </LinearLayout>
 
