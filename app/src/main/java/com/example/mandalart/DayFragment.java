@@ -130,17 +130,13 @@ public class DayFragment extends Fragment {
         char first = todoList[0].get(pos).charAt(0);
         if(first != 'p'){
             int newComplete = 0;
-            String plansSelect = "SELECT * FROM " + DBHelper.TABLE_PLANS + " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "'";
+            String plansSelect = "SELECT COUNT(*) FROM " + DBHelper.TABLE_DAYS + " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "' AND " +
+                    DBHelper.CHECK +"= 1";
             Cursor plansCursor = sqLiteDatabase.rawQuery(plansSelect, null);
             Log.i(LOG, plansSelect);
             if(plansCursor.moveToNext()){
-                newComplete = plansCursor.getInt(3);
-                Log.i(LOG, "newComplete" + newComplete);
+                newComplete = plansCursor.getInt(0);
             }
-            Log.i(LOG, "newComplete" + newComplete);
-            if(chk == 0) newComplete--;
-            else newComplete++;
-            Log.i(LOG, "newComplete" + newComplete);
 
             String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.COMPLETE+ " = " + newComplete +
                     " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos)+"'";
