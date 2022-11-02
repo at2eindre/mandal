@@ -6,13 +6,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +35,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class MandalArtFragment extends Fragment implements OnBackPressedListener{
+public class MandalArtFragment extends Fragment implements OnBackPressedListener, ViewToImage.SaveImageCallback{
 
     static final String LOG = "MandalArtFragmentLog";
 
@@ -43,7 +51,6 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     planComplete / weekCount -> 이렇게 해서 색칠하면 될듯!
     */
     int[][] planComplete = new int[9][9];
-
     SimpleDateFormat format;
     TextView subTopicTextView, mainTheme, mandalArtTitle, mandalArtTerm;
     ImageView tableList;
@@ -68,7 +75,8 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
     MainActivity mainActivity;
     DBHelper dbHelper;
     SQLiteDatabase sqLiteDatabase;
-
+    Button downloadButton;
+    LinearLayout layout;
     String id;
 
     @Nullable
@@ -84,6 +92,7 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         mandalArtTitle = view.findViewById(R.id.mandalart_table_title);
         mandalArtTerm = view.findViewById(R.id.mandalart_table_term);
         tableList = view.findViewById(R.id.table_list);
+        downloadButton = view.findViewById(R.id.download);
         tableList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,7 +110,169 @@ public class MandalArtFragment extends Fragment implements OnBackPressedListener
         }
         setWeekCount();
         getPlanComplete();
+        downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                download();
+            }
+        });
         return view;
+    }
+
+    Bitmap getSubBitmap(int idx){
+        layout = frameView.findViewById(R.id.mandalart_table_linearlayout);
+        Bitmap tmp;
+        if(idx == 0){
+            String mainSelect = "SELECT * FROM " + dbHelper.TABLE_MAIN + " WHERE "+ dbHelper.ID+"='" + id + "';";
+            Cursor mainCursor = sqLiteDatabase.rawQuery(mainSelect, null);
+            if(mainCursor.moveToNext()) {
+                subTopicTextView.setText(mainCursor.getString(5));
+            }
+            String topicSelect2 = "SELECT * FROM " + dbHelper.TABLE_TOPICS + " WHERE " +dbHelper.ID +"='" + id+ "';";
+            Cursor topicCursor2 = sqLiteDatabase.rawQuery(topicSelect2, null);
+            Log.i(LOG, topicSelect2);
+            int ii = 0;
+            while (topicCursor2.moveToNext()) {
+                ssub[++ii].setText(topicCursor2.getString(1));
+            }
+            tmp = getBitmapFromLayout(layout);
+        }
+        else{
+            String topicSelect = "SELECT * FROM " + dbHelper.TABLE_TOPICS + " WHERE "+ dbHelper.TOPIC_ID+"='" + subTopicId[idx] + "';";
+            Cursor topicCursor = sqLiteDatabase.rawQuery(topicSelect, null);
+            if(topicCursor.moveToNext()) {
+                subTopicTextView.setText(topicCursor.getString(1));
+            }
+            String planSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " +dbHelper.TOPIC_ID +"='" + subTopicId[idx] + "';";
+            Cursor planCursor = sqLiteDatabase.rawQuery(planSelect, null);
+            Log.i(LOG, planSelect);
+            int i = 0;
+            while (planCursor.moveToNext()) {
+                ssub[++i].setText(planCursor.getString(1));
+            }
+            tmp = getBitmapFromLayout(layout);
+        }
+        String topicSelect = "SELECT * FROM " + dbHelper.TABLE_TOPICS + " WHERE "+ dbHelper.TOPIC_ID+"='" + mainActivity.topicId + "';";
+        Cursor topicCursor = sqLiteDatabase.rawQuery(topicSelect, null);
+        if(topicCursor.moveToNext()) {
+            subTopicTextView.setText(topicCursor.getString(1));
+        }
+        String planSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " +dbHelper.TOPIC_ID +"='" + mainActivity.topicId + "';";
+        Cursor planCursor = sqLiteDatabase.rawQuery(planSelect, null);
+        Log.i(LOG, planSelect);
+        int i = 0;
+        while (planCursor.moveToNext()) {
+            ssub[++i].setText(planCursor.getString(1));
+        }
+
+        return tmp;
+    }
+
+    Bitmap getMainBitmap(int idx){
+        layout = frameView.findViewById(R.id.main_table_linearlayout);
+        Bitmap tmp;
+        if(idx == 0){
+            tmp = getBitmapFromLayout(layout);
+        }
+        else{
+            String topicSelect = "SELECT * FROM " + dbHelper.TABLE_TOPICS + " WHERE "+ dbHelper.TOPIC_ID+"='" + subTopicId[idx] + "';";
+            Cursor topicCursor = sqLiteDatabase.rawQuery(topicSelect, null);
+            if(topicCursor.moveToNext()) {
+                mainTheme.setText(topicCursor.getString(1));
+            }
+            String planSelect = "SELECT * FROM " + dbHelper.TABLE_PLANS + " WHERE " +dbHelper.TOPIC_ID +"='" + subTopicId[idx] + "';";
+            Cursor planCursor = sqLiteDatabase.rawQuery(planSelect, null);
+            Log.i(LOG, planSelect);
+            int i = 0;
+            while (planCursor.moveToNext()) {
+                sub[++i].setText(planCursor.getString(1));
+            }
+            tmp = getBitmapFromLayout(layout);
+
+            String mainSelect = "SELECT * FROM " + dbHelper.TABLE_MAIN + " WHERE "+ dbHelper.ID+"='" + id + "';";
+            Cursor mainCursor = sqLiteDatabase.rawQuery(mainSelect, null);
+            if(mainCursor.moveToNext()) {
+                mainTheme.setText(mainCursor.getString(5));
+            }
+            String topicSelect2 = "SELECT * FROM " + dbHelper.TABLE_TOPICS + " WHERE " +dbHelper.ID +"='" + id+ "';";
+            Cursor topicCursor2 = sqLiteDatabase.rawQuery(topicSelect2, null);
+            Log.i(LOG, topicSelect2);
+            int ii = 0;
+            while (topicCursor2.moveToNext()) {
+                sub[++ii].setText(topicCursor2.getString(1));
+            }
+        }
+        return tmp;
+    }
+
+    void download(){
+        Bitmap[] bitmaps = new Bitmap[9];
+
+        if(currentMode == MAIN_MODE){
+            for(int i = 0;i<4;i++){
+                bitmaps[i] = getMainBitmap(i + 1);
+            }
+            bitmaps[4] = getMainBitmap(0);
+            for(int i=5;i<9;i++){
+                bitmaps[i]=getMainBitmap(i);
+            }
+        }
+        else{
+            for(int i = 0;i<4;i++){
+                bitmaps[i] = getSubBitmap(i + 1);
+            }
+            bitmaps[4] = getSubBitmap(0);
+            for(int i=5;i<9;i++){
+                bitmaps[i]=getSubBitmap(i);
+            }
+        }
+
+        ViewToImage viewToImage = new ViewToImage();
+        viewToImage.setSaveImageCallback(this);
+        viewToImage.saveBitMap(mainActivity, mergeMultiple(bitmaps));
+
+    }
+
+    private Bitmap mergeMultiple(Bitmap[] parts){
+        Bitmap result = Bitmap.createBitmap(parts[0].getWidth() * 3, parts[0].getHeight() * 3, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint();
+        for (int i = 0; i < parts.length; i++) {
+            canvas.drawBitmap(parts[i], parts[i].getWidth() * (i % 3), parts[i].getHeight() * (i / 3), paint);
+        }
+        return result;
+    }
+
+    private Bitmap getBitmapFromLayout(LinearLayout layout) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(layout.getWidth(), layout.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable = layout.getBackground();
+        if (bgDrawable != null) {
+            bgDrawable.draw(canvas);
+        } else {
+            canvas.drawColor(Color.WHITE);
+        }
+        layout.draw(canvas);
+        return returnedBitmap;
+    }
+
+    @Override
+    public void imageResult(int status, Uri uri) {
+        switch (status) {
+            case 200:
+                shareImage(uri);
+                break;
+            case 400:
+                break;
+
+        }
+    }
+    private void shareImage(Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(intent.createChooser(intent, "Share Image"));
+
     }
 
     void getPlanComplete(){
