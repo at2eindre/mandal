@@ -186,13 +186,14 @@ public class WeekFragment extends Fragment {
             String plansSelect = "SELECT * FROM " + DBHelper.TABLE_PLANS + " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos) + "'";
             Cursor plansCursor = sqLiteDatabase.rawQuery(plansSelect, null);
             if(plansCursor.moveToNext()){
-                newComplete = daysCursor.getInt(3);
+                newComplete = plansCursor.getInt(3);
             }
             if(chk == 0) newComplete--;
             else newComplete++;
 
             String updatePlans = "UPDATE " + DBHelper.TABLE_PLANS + " SET " + DBHelper.COMPLETE+ " = " + newComplete +
                     " WHERE " + DBHelper.PLAN_ID + " = '" + todoList[0].get(pos)+"'";
+
             sqLiteDatabase.execSQL(updatePlans);
 
         }
