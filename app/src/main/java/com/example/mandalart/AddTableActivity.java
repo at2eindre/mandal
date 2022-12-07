@@ -64,6 +64,7 @@ public class AddTableActivity extends AppCompatActivity {
     int flag = 1;
     int fflag = 1;
 
+    boolean insertOK = false;
     ArrayList<String> topicId = new ArrayList<>();
 
     ArrayList<String>[] planId = new ArrayList[9];
@@ -137,6 +138,13 @@ public class AddTableActivity extends AppCompatActivity {
         layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         frameLayout = findViewById(R.id.insert_mandalart_table_framelayout);
         getMandalArtView(0);
+        Date date = new Date();
+        if(termStart.getText().equals("시작")){
+            termStart.setText(date.getYear() + 1900 + "/01/01");
+        }
+        if(termEnd.getText().equals("끝")){
+            termEnd.setText(date.getYear() + 1900 + "/12/31");
+        }
     }
 
     void getMainMandalArt(String id){
@@ -147,7 +155,7 @@ public class AddTableActivity extends AppCompatActivity {
             title = mainCursor.getString(1);
             term = mainCursor.getString(2);
             color = mainCursor.getString(3);
-            theme = mainCursor.getString(4);
+            theme = mainCursor.getString(5);
         }
 //        mandalArtTitle.setText(title);
 //        mandalArtTerm.setText(term);
@@ -191,7 +199,7 @@ public class AddTableActivity extends AppCompatActivity {
         String insertTableId = "INSERT INTO " + DBHelper.TABLE_MAIN + "(" + DBHelper.ID + ", " +
                 DBHelper.TITLE + ", " + DBHelper.TERM_START + ", " +DBHelper.TERM_END + ", " +
                 DBHelper.COLOR + ", " + DBHelper.THEME + ") VALUES ('" + id + "', " + NULL + ", " +
-                NULL +", " + NULL +", " + NULL +", " + NULL +")";
+                NULL +", " + NULL +", '" + settingColor +"', " + NULL +")";
         Log.i(LOG, insertTableId);
         sqLiteDatabase.execSQL(insertTableId);
     }
@@ -437,37 +445,36 @@ public class AddTableActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    if(termChecked()){
-                        savePrev(insertWhere,subWhere);
-                        updateMain();
-                        updateColor();
-                        finishAddTable();
-
-                    }
+                    termChecked();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                savePrev(insertWhere,subWhere);
+                updateMain();
+                updateColor();
+                finishAddTable();
+                insertOK = true;
             }
         });
     }
 
-    boolean termChecked() throws ParseException {
+    void termChecked() throws ParseException {
+        Date date = new Date();
         if(termStart.getText().equals("시작")){
-            Toast.makeText(this.getApplicationContext(), "기간 입력이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
-            return false;
+            termStart.setText(date.getYear() + 1900 + "/01/01");
         }
         if(termEnd.getText().equals("끝")){
-            Toast.makeText(this.getApplicationContext(), "기간 입력이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
-            return false;
+            termEnd.setText(date.getYear() + 1900 + "/12/31");
         }
 
         Date termStartDate = format.parse(termStart.getText().toString());
         Date termEndDate = format.parse(termEnd.getText().toString());
         long diff = termEndDate.getTime() - termStartDate.getTime();
-        if(diff >= 0) return true;
-        else {
-            Toast.makeText(this.getApplicationContext(), "기간 입력이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
-            return false;
+        if(diff < 0){
+            termStart.setText(date.getYear() + 1900 + "/01/01");
+            termEnd.setText(date.getYear() + 1900 + "/12/31");
+            Toast.makeText(this.getApplicationContext(), "기간을 " + termStart.getText() + " ~ " +
+                    termEnd.getText() + "로 설정하였습니다.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -537,7 +544,6 @@ public class AddTableActivity extends AppCompatActivity {
 
     void resetDay(String topicId, int i){
         //topicId의 i번째 플랜 불러오기
-
         String topicSelect = "SELECT * FROM " + dbHelper.TABLE_SSUB + " WHERE " + dbHelper.TOPIC_ID + " = '"  + topicId + "';";
         Cursor topicCursor = sqLiteDatabase.rawQuery(topicSelect, null);
         if(topicCursor.moveToNext()){
@@ -753,4 +759,17 @@ public class AddTableActivity extends AppCompatActivity {
         deletePlans();
         super.onBackPressed();
     }
+
+    @Override
+    protected void onDestroy() {
+        if(!insertOK) {
+            String notSave = "DELETE FROM " + dbHelper.TABLE_MAIN + " WHERE " + dbHelper.ID + " = '" + tableId + "';";
+            sqLiteDatabase.execSQL(notSave);
+            deleteTopics();
+            deletePlans();
+        }
+        super.onDestroy();
+    }
+
+
 }

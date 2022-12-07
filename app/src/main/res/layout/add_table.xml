@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:hint="만다라트 이름을 입력하세요."
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_marginRight="5dp"
             android:textStyle="bold"
             android:textColor="@color/textColor"
@@ -39,6 +39,7 @@
             android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:text="색"
+            android:textSize="12sp"
             android:textColorLink="@color/black" />
         <Button
             android:id="@+id/save_button"
@@ -47,6 +48,7 @@
             android:layout_weight="1"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:textSize="12sp"
             android:text="저장" />
     </LinearLayout>
 
@@ -288,17 +290,25 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/insert_mandalart_table_framelayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:orientation="vertical"
-        android:layout_marginTop="4dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/term_visible">
 
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/insert_mandalart_table_framelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="vertical">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
